@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<website>
+  <project name="百川站点">
+    <site name="www.bcunite.com" compressname="public.tagz.www.bcunite.com.zip">
+      <sitedir>D:\website\www.bcunite.com</sitedir>
+      <compressname>public.tagz.www.bcunite.com.zip</compressname>
+      <excludedir>D:\website\www.bcunite.com\upload\</excludedir>
+      <excludedir>D:\website\www.bcunite.com\Log\</excludedir>
+      <excludedir>D:\website\www.bcunite.com\obj\</excludedir>
+      <excludedir>D:\website\www.bcunite.com\Web.config</excludedir>
+      <excludedir>D:\website\www.bcunite.com\ApplicationInsights.config</excludedir>
+      <excludedir>D:\website\www.bcunite.com\packages.config</excludedir>
+      <excludedir>D:\website\www.bcunite.com\PrecompiledApp.config</excludedir>
+      <targetdir>D:\website\www.bcunite.com</targetdir>
+      <targetbackupdir  formart="yyyyMMdd">D:\backup\</targetbackupdir>
+      <targetserver>47.114.135.29:8056</targetserver>
+	  <targetserver>121.196.57.115:8056</targetserver>
+    </site>
+    <site name="mange.bcunite.com" compressname="public.tagz.manage.bcunite.com.zip">
+      <sitedir>D:\website\manage.bcunite.com</sitedir>
+      <excludedir>D:\website\manage.bcunite.com\upload\</excludedir>
+      <excludedir>D:\website\manage.bcunite.com\Log\</excludedir>
+      <excludedir>D:\website\manage.bcunite.com\obj\</excludedir>
+      <excludedir>D:\website\manage.bcunite.com\Web.config</excludedir>
+      <excludedir>D:\website\manage.bcunite.com\ApplicationInsights.config</excludedir>
+      <excludedir>D:\website\manage.bcunite.com\packages.config</excludedir>
+      <excludedir>D:\website\manage.bcunite.com\PrecompiledApp.config</excludedir>
+      <targetdir>D:\website\manage.bcunite.com</targetdir>
+      <targetbackupdir  formart="yyyyMMdd">D:\backup\</targetbackupdir>
+      <targetserver>47.114.135.29:8056</targetserver>
+      <targetserver>121.196.57.115:8056</targetserver>
+    </site>
+    <site name="cserp.bcunite.com" compressname="public.tagz.cserp.bcunite.com.zip">
+      <sitedir>D:\website\manage.bcunite.com</sitedir>
+      <excludedir>D:\website\manage.bcunite.com\upload\</excludedir>
+      <excludedir>D:\website\manage.bcunite.com\Log\</excludedir>
+      <excludedir>D:\website\manage.bcunite.com\obj\</excludedir>
+      <excludedir>D:\website\manage.bcunite.com\Web.config</excludedir>
+      <excludedir>D:\website\manage.bcunite.com\ApplicationInsights.config</excludedir>
+      <excludedir>D:\website\manage.bcunite.com\packages.config</excludedir>
+      <excludedir>D:\website\manage.bcunite.com\PrecompiledApp.config</excludedir>
+      <targetdir>D:\website\cserp.bcunite.com</targetdir>
+      <targetbackupdir  formart="yyyyMMdd">D:\backup\</targetbackupdir>
+      <targetserver>121.196.57.115:8056</targetserver>
+    </site>
+    <site name="wx.bcunite.com" compressname="public.tagz.wx.bcunite.com.zip">
+      <sitedir>D:\website\wx.bcunite.com</sitedir>
+      <excludedir>D:\website\wx.bcunite.com\upload\</excludedir>
+      <excludedir>D:\website\wx.bcunite.com\Log\</excludedir>
+      <excludedir>D:\website\wx.bcunite.com\obj\</excludedir>
+      <excludedir>D:\website\wx.bcunite.com\Web.config</excludedir>
+      <excludedir>D:\website\wx.bcunite.com\ApplicationInsights.config</excludedir>
+      <excludedir>D:\website\wx.bcunite.com\packages.config</excludedir>
+      <excludedir>D:\website\wx.bcunite.com\PrecompiledApp.config</excludedir>
+      <targetdir>D:\website\wx.bcunite.com</targetdir>
+      <targetbackupdir  formart="yyyyMMdd">D:\backup\</targetbackupdir>
+      <targetserver>47.114.135.29:8056</targetserver>
+      <targetserver>121.196.57.115:8056</targetserver>
+    </site>
+
+    <site name="cswx.bcunite.com" compressname="public.tagz.cswx.bcunite.com.zip">
+      <sitedir>D:\website\wx.bcunite.com</sitedir>
+      <excludedir>D:\website\wx.bcunite.com\upload\</excludedir>
+      <excludedir>D:\website\wx.bcunite.com\Log\</excludedir>
+      <excludedir>D:\website\wx.bcunite.com\obj\</excludedir>
+      <excludedir>D:\website\wx.bcunite.com\Web.config</excludedir>
+      <excludedir>D:\website\wx.bcunite.com\ApplicationInsights.config</excludedir>
+      <excludedir>D:\website\wx.bcunite.com\packages.config</excludedir>
+      <excludedir>D:\website\wx.bcunite.com\PrecompiledApp.config</excludedir>
+      <targetdir>D:\website\testwebsite\cswx.bcunite.com</targetdir>
+      <targetbackupdir  formart="yyyyMMdd">D:\backup\</targetbackupdir>
+      <targetserver>121.196.57.115:8056</targetserver>
+    </site>
+    <site name="supply.bcunite.com" compressname="public.tagz.supply.bcunite.com.zip">
+      <sitedir>D:\website\supply.bcunite.com</sitedir>
+      <excludedir>D:\website\supply.bcunite.com\upload\</excludedir>
+      <excludedir>D:\website\supply.bcunite.com\Log\</excludedir>
+      <excludedir>D:\website\supply.bcunite.com\obj\</excludedir>
+      <excludedir>D:\website\supply.bcunite.com\Web.config</excludedir>
+      <excludedir>D:\website\supply.bcunite.com\ApplicationInsights.config</excludedir>
+      <excludedir>D:\website\supply.bcunite.com\packages.config</excludedir>
+      <excludedir>D:\website\supply.bcunite.com\PrecompiledApp.config</excludedir>
+      <excludedir>D:\website\supply.bcunite.com\js\jqueryplus</excludedir>
+      <targetdir>D:\website\supply.bcunite.com</targetdir>
+      <targetbackupdir  formart="yyyyMMdd">D:\backup\</targetbackupdir>
+      <targetserver>47.114.135.29:8056</targetserver>
+      <targetserver>121.196.57.115:8056</targetserver>
+    </site>
+    <site name="img.bcunite.com" compressname="public.tagz.img.bcunite.com.zip">
+      <sitedir>D:\websource\bc\trunk\Bc.Imgs</sitedir>
+      <excludedir>D:\websource\bc\trunk\Bc.Imgs\upload\</excludedir>
+      <excludedir>D:\websource\bc\trunk\Bc.Imgs\Log\</excludedir>
+      <excludedir>D:\websource\bc\trunk\Bc.Imgs\obj\</excludedir>
+      <excludedir>D:\websource\bc\trunk\Bc.Imgs\Web.config</excludedir>
+      <excludedir>D:\websource\bc\trunk\Bc.Imgs\ApplicationInsights.config</excludedir>
+      <excludedir>D:\websource\bc\trunk\Bc.Imgs\packages.config</excludedir>
+      <excludedir>D:\websource\bc\trunk\Bc.Imgs\PrecompiledApp.config</excludedir>
+      <excludedir>D:\websource\bc\trunk\Bc.Imgs\bin</excludedir>
+      <excludedir>D:\websource\bc\trunk\Bc.Imgs\js\jqueryplus</excludedir>
+      <targetdir>D:\website\img.bcunite.com</targetdir>
+      <targetbackupdir  formart="yyyyMMdd">D:\backup\</targetbackupdir>
+      <targetserver>47.114.135.29:8056</targetserver>
+      <targetserver>121.196.57.115:8056</targetserver>
+    </site>
+    <site name="api.bcunite.com" compressname="public.tagz.api.bcunite.com.zip">
+      <sitedir>D:\website\api.bcunite.com</sitedir>
+      <excludedir>D:\website\api.bcunite.com\upload\</excludedir>
+      <excludedir>D:\website\api.bcunite.com\Log\</excludedir>
+      <excludedir>D:\website\api.bcunite.com\obj\</excludedir>
+      <excludedir>D:\website\api.bcunite.com\Web.config</excludedir>
+      <excludedir>D:\website\api.bcunite.com\ApplicationInsights.config</excludedir>
+      <excludedir>D:\website\api.bcunite.com\packages.config</excludedir>
+      <excludedir>D:\website\api.bcunite.com\PrecompiledApp.config</excludedir>
+      <excludedir>D:\website\api.bcunite.com\js\jqueryplus</excludedir>
+      <targetdir>D:\website\api.bcunite.com</targetdir>
+      <targetbackupdir  formart="yyyyMMdd">D:\backup\</targetbackupdir>
+      <targetserver>47.114.135.29:8056</targetserver>
+      <targetserver>121.196.57.115:8056</targetserver>
+    </site>
+      <site name="csapi.bcunite.com" compressname="public.tagz.csapi.bcunite.com.zip">
+      <sitedir>D:\website\api.bcunite.com</sitedir>
+      <excludedir>D:\website\api.bcunite.com\upload\</excludedir>
+      <excludedir>D:\website\api.bcunite.com\Log\</excludedir>
+      <excludedir>D:\website\api.bcunite.com\obj\</excludedir>
+      <excludedir>D:\website\api.bcunite.com\Web.config</excludedir>
+      <excludedir>D:\website\api.bcunite.com\ApplicationInsights.config</excludedir>
+      <excludedir>D:\website\api.bcunite.com\packages.config</excludedir>
+      <excludedir>D:\website\api.bcunite.com\PrecompiledApp.config</excludedir>
+      <excludedir>D:\website\api.bcunite.com\js\jqueryplus</excludedir>
+      <targetdir>D:\website\testwebsite\csapi.bcunite.com</targetdir>
+      <targetbackupdir  formart="yyyyMMdd">D:\backup\</targetbackupdir>
+
+      <targetserver>121.196.57.115:8056</targetserver>
+    </site>
+  </project>
+
+
+  <project name="百川数据库">
+    <site name="baichuan库" compressname="public.tagz.UFTData393204_000002.zip">
+      <sitedir>F:\database\t+ok\UFTSYSTEM.bak</sitedir>
+      <targetdir>D:\website\www.bcunite.com\</targetdir>
+      <targetbackupdir  formart="yyyyMMdd">D:\backup\</targetbackupdir>
+      <targetserver>127.0.0.1:8056</targetserver>
+    </site>
+    
+  </project>
+
+</website>

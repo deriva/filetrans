@@ -1,0 +1,8 @@
+﻿\obj\
+.json
+Web.config
+.csproj
+\jqueryplus\
+.suo
+.so
+.pdb

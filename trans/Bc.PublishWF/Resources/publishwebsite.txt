@@ -1,0 +1,4 @@
+﻿public.tagz.manage2.allpcb.com.zip=>D:\发布\manage2.allpcb.com
+public.tagz.img.allpcb.com.zip=>D:\发布\img.allpcb.com
+public.tagz.ww2.allpcb.com.zip=>D:\发布\ww2.allpcb.com
+public.tagz.api.allpcb.com.zip=>D:\发布\api.allpcb.com
