@@ -1,0 +1,94 @@
+﻿<!--发布到服务器-->
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <div>
+            <form class="layui-form layui-form-pane" action="" id="fm">
+                <div class="layui-form-item">
+                    <div class='layui-inline'>
+                        <label class='layui-form-label'>站点名称</label>
+                        <div class='layui-input-inline'>
+                            <input type='text' value='' bf-model='Search.SiteName' name='SiteName' class='layui-input' />
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <button type="button" class="layui-btn layui-btn-primary"
+                                onclick="BJPL.SearchData(0)">
+                            <i class="layui-icon"></i> 搜 索
+                        </button>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <h2 bf-html="EnvName"></h2>
+        <div class="row">
+            <!--列表页-->
+            <div id="listtable"> </div>
+            <script type="text/html" id="tpl_lsttable">
+                <table class='layui-table'>
+                    <thead class='head'>
+                        <tr>
+
+                            <th>ID</th>
+                            <th>发布编号</th>
+                            <th>站点名称</th>
+                            <th>发布的路径</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {{each lst as item }}
+                        <tr>
+                            <td>{{item.Id}}</td>
+                            <td>{{item.PublicNo}}</td>
+                            <td>{{item.SiteName}}</td>
+                            <td style="text-align:left">{{item.Path}}</td>
+                            <td>
+                                <a href='javascript:void(0)' onclick="ls.PublicSite('{{item.PublicNo}}', {{item.Env}});">
+                                    <i class="layui-icon">&#xe642;</i>发布
+                                </a>
+                            </td>
+
+                        </tr>
+
+                        {{/each}}
+                    </tbody>
+                </table>
+            </script>
+            <div class='pagezone' id='pagezone'></div>
+        </div>
+    </div>
+</div> 
+<script src="~/js/localserver.js"></script>
+<script type="text/javascript">
+    //全局数据对象
+    var ban = new Ban({
+        data: {
+            Search: {
+                SiteName: '',
+                PageSize: 20,Status:1,
+                Env: LP.GetQueryString("env"),
+                Page: 1
+            }, //搜索条件
+            LstEnv: [{ key: "1", val: "生产" }, { key: "2", val: "测试" }, { key: "3", val: "预发" }],
+            EnvName:   LP.GetQueryString("env")==1?"生产环境":"测试环境",
+            Lst: [], //列表集合,
+            LstCb:"P.LstCb",
+            SearchUrl: '/PublicFileDir/GetPublicInfoList',
+            CancelUrl: '',
+        }
+    });
+    var P = {
+        LstCb: () => {//获取发布的站点目标服务器
+            ban.$data.Lst.forEach(x => {
+                x.Env = LP.GetQueryString("env");
+            });
+        }
+    }
+</script>
+<script type="text/javascript" src="/js/bj-pagelist.js"></script>
+

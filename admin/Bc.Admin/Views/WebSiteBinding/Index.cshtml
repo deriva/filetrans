@@ -1,0 +1,149 @@
+﻿
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <div>
+            <form class="layui-form layui-form-pane" action="" id="fm">
+                <div class="layui-form-item">
+                    <div class='layui-inline'>
+                        <label class='layui-form-label'>站点编号</label>
+                        <div class='layui-input-inline'>
+                            <input type='text' value='' bf-model='Search.No' name='No' class='layui-input' />
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <button type="button" class="layui-btn layui-btn-primary"
+                                onclick="BJPL.SearchData(0)">
+                            <i class="layui-icon"></i> 搜 索
+                        </button>
+                        <button class="layui-btn layui-btn-normal" onclick="BJPL.DialogEdit(-1, P.DialogEditEx)">
+                            <i class="layui-icon">&#xe608;</i> 添加
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+         
+        <div class="row">
+            <!--列表页-->
+            <div id="listtable"> </div>
+            <script type="text/html" id="tpl_lsttable">
+                <table class='layui-table'>
+                    <thead class='head'>
+                        <tr>
+
+                            <th>ID</th>
+                            <th>站点编号</th>
+
+                            <th>服务器</th>
+                            <th>端口</th>
+                            <th>协议:http/https</th>
+                            <th>主机名</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {{each lst as item }}
+                        <tr>
+                            <td>{{item.Id}}</td>
+                            <td>{{item.No}}</td>
+                            <td>{{item.ServerIP}}</td>
+                            <td>{{item.Port}}</td>
+                            <td>{{item.Protocol}}</td>
+                            <td style="text-align:left">{{item.HostName}}</td>
+
+                            <td>
+
+
+                                <a href='javascript:void(0)' onclick="BJPL.DialogEdit({{$index}})">
+                                    <i class="layui-icon">&#xe642;</i>编辑
+                                </a>
+                                <a href='javascript:void(0)' onclick="BJPL.Cancel({ Id: {{item.Id}}})">
+                                    <i class="layui-icon">&#xe642;</i>取消
+                                </a>
+                            </td>
+
+                        </tr>
+
+                        {{/each}}
+                    </tbody>
+                </table>
+            </script>
+            <div class='pagezone' id='pagezone'></div>
+        </div>
+    </div>
+</div>
+<!--编辑页页-->
+<script type="text/html" id="tpl_edit">
+    <form id="fmedit">
+        <table class='layui-table'>
+            <tr>
+
+                <th>服务器</th>
+                <td>
+                    <input type='text' readonly="readonly" value='{{ServerIP}}' bf-model='Edit.ServerIP' name='ServerIP' class='layui-input' />
+                </td>
+                <th>端口</th>
+                <td>
+                    <input type='text' value='{{Port}}' bf-model='Edit.Port' name='Port' class='layui-input' />
+                </td>
+            </tr>
+
+            <tr>
+                <th>主机名</th>
+                <td>
+                    <input type='text' value='{{HostName}}' bf-model='Edit.HostName' name='HostName' class='layui-input' />
+                </td>
+                <th>协议:http/https</th>
+                <td>
+                    <input type='text' value='{{Protocol}}' bf-model='Edit.Protocol' name='Protocol' class='layui-input' />
+                </td>
+            </tr>
+
+
+            <tr>
+                <th></th>
+                <td colspan="5">
+
+                    <input type='hidden' value='{{Id}}' class='layui-input' name='Id' bf-model='Edit.Id' />
+                    <input type='hidden' value='{{No}}' class='layui-input' name='No' bf-model='Edit.No' />
+                </td>
+            </tr>
+        </table>
+        <div class="tc">
+            <input class='layui-btn' type='button' value='保存' onclick="BJPL.Submit()">
+        </div>
+    </form>
+</script>
+
+<script type="text/javascript">
+    var proxy;
+    //全局数据对象
+    var ban = new Ban({
+        data: {
+            Search: {
+                Id: 0,
+                No: LP.GetQueryString("No"),
+                PageSize: 20,
+                Page: 1
+            }, //搜索条件
+            Lst: [], //列表集合,
+            Edit: {},
+            SearchUrl: '/WebSiteBinding/GetList',
+            EditSaveUrl: '/WebSiteBinding/Save',
+            CancelUrl: '',
+        }
+    });
+    var P = {
+        DialogEditEx: function (i) {
+            if (i < 0) {
+                proxy.Edit.No = proxy.Search.No;
+                proxy.Edit.Id = 0;
+            }
+        }
+    }
+</script>
+<script type="text/javascript" src="/js/bj-pagelist.js"></script>
+

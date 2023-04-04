@@ -1,0 +1,145 @@
+﻿
+<div class="layuimini-container">
+    <div class="layuimini-main">
+      
+            <div>
+                <form class="layui-form layui-form-pane" action="" id="fm">
+                    <div class="layui-form-item">
+                        <div class='layui-inline'>
+                            <label class='layui-form-label'>服务端No</label>
+                            <div class='layui-input-inline'>
+                                <input type='text' value='' bf-model='Search.No' name='No' class='layui-input' />
+                            </div>
+                        </div>
+                        <div class='layui-inline'>
+                            <label class='layui-form-label'>服务名称</label>
+                            <div class='layui-input-inline'>
+                                <input type='text' value='' bf-model='Search.ServerName' name='ServerName' class='layui-input' />
+                            </div>
+                        </div>
+
+
+                        
+
+                        <div class="layui-inline">
+                            <button type="button" class="layui-btn layui-btn-primary"
+                                    onclick="BJPL.SearchData(0)">
+                                <i class="layui-icon"></i> 搜 索
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+  
+        <div class="row">
+            <!--列表页-->
+            <div id="listtable"> </div>
+            <script type="text/html" id="tpl_lsttable">
+                <table class='layui-table'>
+                    <thead class='head'>
+                        <tr>
+
+                            <th>ID</th>
+                            <th>编号</th>
+                            <th>名称</th>
+                            <th>IP</th>
+                            <th>Port</th>
+                            <th title="1生产端 2测试端">环境</th>
+                            <th>更新时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {{each lst as item }}
+                        <tr>
+                            <td>{{item.Id}}</td>
+                            <td>{{item.No}}</td>
+                            <td>{{item.ServerName}}</td>
+                            <td>{{item.IP}}</td>
+                            <td style="text-align:left">{{item.Port}}</td>
+                            <td title="1生产端 2测试端">{{item.Env}}</td>
+
+                            <td>{{item.UpdateTime}}</td>
+                            <td>
+
+
+
+                                <a href='javascript:void(0)' onclick="BJPL.Cancel({ Id: {{item.Id}}})">
+                                    <i class="layui-icon">&#xe642;</i>取消
+                                </a>
+                            </td>
+
+                        </tr>
+
+                        {{/each}}
+                    </tbody>
+                </table>
+            </script>
+            <div class='pagezone' id='pagezone'></div>
+        </div>
+    </div>
+</div>
+<!--编辑页页-->
+<script type="text/html" id="tpl_edit">
+    <form id="fmedit">
+        <table class='layui-table'>
+            <tr>
+                <th>参数</th>
+                <td>{{Id}}-{{SiteNo}}</td>
+                <th>站点名称</th>
+                <td>
+                    <input type='text' readonly="readonly" value='{{SiteName}}' bf-model='Search.SiteName' name='SiteName' class='layui-input' />
+                </td>
+            </tr>
+           
+            <tr>
+                <th>虚拟目录名称</th>
+                <td>
+                    <input type='text' value='{{VirtualName}}' bf-model='Search.VirtualName' name='VirtualName' class='layui-input' />
+                </td>
+                <th>虚拟路径</th>
+                <td>
+                    <input type='text' value='{{VirtualDir}}' bf-model='Search.VirtualDir' name='VirtualDir' class='layui-input' />
+                </td>
+            </tr>
+          
+
+            <tr>
+                <th></th>
+                <td colspan="5">
+
+                    <input type='hidden' value='{{Id}}' class='layui-input' name='Id' /> 
+                    <input type='hidden' value='{{SiteNo}}' class='layui-input' name='SiteNo' />
+                </td>
+            </tr>
+        </table>
+        <div class="tc">
+            <input class='layui-btn' type='button' value='保存' onclick="BJPL.Submit()">
+        </div>
+    </form>
+</script>
+
+<script type="text/javascript">
+    //全局数据对象
+    var ban = new Ban({
+        data: {
+            Search: {
+                Id: 0,
+                ServerName: LP.GetQueryString("ServerName"),
+                No: LP.GetQueryString("No"),
+                PageSize: 20,
+                Page: 1
+            }, //搜索条件
+            Lst: [], //列表集合,
+            SearchUrl: '/ServerApp/GetList',
+            EditSaveUrl: '/ServerApp/Save',
+            CancelUrl: '',
+        }
+    });
+    var P = {
+       
+    }
+</script>
+<script type="text/javascript" src="/js/bj-pagelist.js"></script>
+

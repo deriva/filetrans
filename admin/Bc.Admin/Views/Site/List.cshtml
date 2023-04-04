@@ -1,0 +1,299 @@
+﻿<style type="text/css">
+    .tabzone { margin-bottom: 5px; height: 29px; padding-bottom: 5px }
+    .tabzone ul li { float: left; margin-right: 10px; cursor: pointer; padding: 5px 10px }
+    .tabzone ul li:hover { border-bottom: 2px solid #2fcb87; }
+    .tabzone  ul li.on{border-bottom:2px solid #2fcb87;}
+</style>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <div class="tabzone">
+            <ul>
+                <li onclick="P.SkipEnv(3)" bf-class="Env.Env3">预发环境</li>
+                <li onclick="P.SkipEnv(2)" class="on" bf-class="Env.Env2">测试环境</li> 
+                <li onclick="P.SkipEnv(1)" bf-class="Env.Env1">生产环境</li>
+            </ul>
+        </div>
+        
+        <div>
+            <form class="layui-form layui-form-pane" action="" id="fm" onsubmit="return false">
+                <div class="layui-form-item">
+                    <div class='layui-inline'>
+                        <label class='layui-form-label'>站点名称</label>
+                        <div class='layui-input-inline'>
+                            <input type='text' value='' bf-model='Search.SiteName' name='SiteName' class='layui-input' />
+                        </div>
+                    </div> 
+                    <div class="layui-inline">
+                        <button type="button" class="layui-btn layui-btn-primary"
+                                onclick="BJPL.SearchData(0)">
+                            <i class="layui-icon"></i> 搜 索
+                        </button>
+                        <button class="layui-btn layui-btn-normal" onclick="P.DialogEdit(-1,0)"
+                                op-id="Operate_Edit">
+                            <i class="layui-icon">&#xe608;</i> 添加
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="row">
+            <!--列表页-->
+            <div id="listtable"> </div>
+            <script type="text/html" id="tpl_lsttable">
+                <table class='layui-table'>
+                    <thead class='head'>
+                        <tr>
+
+                            <th>ID</th>
+                            <th>Protocol</th>
+                            <th>站点名称</th>
+                            <th>端口</th>
+                            <th>服务器</th>
+                            <th>编号</th>
+                            <th>站点目录</th>
+                            <th>状态</th>
+                            <th>
+                                环境
+                            </th>
+                            <th>更新时间</th>
+                            <th>是否压缩</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {{each lst as item }}
+                        <tr>
+                            <td>{{item.Id}}</td>
+                            <td>{{item.Protocol}}</td>
+                            <td>{{item.SiteName}}</td>
+                            <td>{{item.Port}}</td>
+                            <td>{{item.ServerIP}}</td>
+                            <td>{{item.No}}</td>
+                            <td style="text-align:left">{{item.SiteDir}}</td>
+                            <td>{{item.StatusName}}</td>
+                            <td>{{item.EnvName}}</td>
+                            <td>{{item.UpdateTime}}</td>
+                            <td>{{item.IsCompressName}}</td>
+                            <td>
+
+
+
+
+                                <a href='javascript:void(0)' onclick="P.DialogEdit({{$index}},0)">
+                                    <i class="layui-icon">&#xe642;</i>编辑
+                                </a>
+                                <a href='javascript:void(0)' onclick="P.DialogEdit({{$index}},1)">
+                                    <i class="layui-icon">&#xe642;</i>克隆
+                                </a>
+                                <a href='javascript:void(0)' onclick="BJPL.Cancel({ Id: {{item.Id}}})">
+                                    <i class="layui-icon">&#xe642;</i>取消
+                                </a>
+                                <hr style="margin:0" />
+                                <a href='javascript:void(0)' onclick="ls.CreateIIS_Site('{{item.No}}')">
+                                    <i class="layui-icon">&#xe716;</i>
+                                    建站点
+                                </a>
+                                <a href='javascript:void(0)' onclick="LP.DialogRb('/SiteVirtualDir/Index?SiteName={{item.SiteName}}&SiteNo={{item.No}}',0,0,'',2)">
+                                    <i class="layui-icon">&#xe716;</i>
+                                    虚拟目录
+                                </a>
+                                <a href='javascript:void(0)' onclick="ls.EnabledIIS_Site('{{item.No}}',1)">
+                                    <i class="layui-icon">&#xe652;</i>
+                                    启动站点
+                                </a>
+                                <a href='javascript:void(0)' onclick="ls.EnabledIIS_Site('{{item.No}}',2)"> <i class="layui-icon">&#xe651;</i> 停止站点</a>
+
+                                <a href='javascript:void(0)' onclick="ls.EnabledIIS_Site('{{item.No}}',3)">
+                                    <i class="layui-icon">&#x1007;</i>
+                                    移除站点
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {{/each}}
+                    </tbody>
+                </table>
+            </script>
+            <div class='pagezone' id='pagezone'></div>
+        </div>
+    </div>
+</div>
+<!--编辑页页-->
+<script type="text/html" id="tpl_edit">
+    <form id="fmedit">
+        <table class='layui-table'>
+            <tr>
+                <th>参数</th>
+                <td>{{No}}</td>
+                <th>站点名称</th>
+                <td>
+                    <input type='text' value='{{SiteName}}' name='SiteName' class='layui-input' />
+                </td>
+            </tr>
+            <tr>
+                <th>端口</th>
+                <td><input type='text' value='{{Port}}' class='layui-input' bf-model='Search.Port' name='Port' /></td>
+                <th>ServerIP</th>
+                <td>
+                    <input type='text' value='{{ServerIP}}' name='ServerIP' class='layui-input' />
+                    <span style="color:red">格式:xx.xxx.xxx.xxx:8057</span>
+                </td>
+            </tr>
+            <tr>
+                <th>站点目录</th>
+                <td>
+                    <input type='text' value='{{SiteDir}}' name='SiteDir' class='layui-input' />
+                </td>
+                <th>是否压缩</th>
+                <td>
+                    <select class="layui-input" name="IsCompress" defval="{{IsCompress}}"> 
+                        <option value="1" selected="selected">是</option>
+                      
+                    </select>
+
+                </td>
+            </tr>
+            <tr>
+                <th>协议</th>
+                <td>
+                    <select class="layui-input" name="Protocol" defval="{{Protocol}}">
+                        <option value="http">http</option>
+                        <option value="https">https</option>
+                    </select>
+                </td>
+                <th>是否启用</th>
+                <td>
+                    <select class="layui-input" name="Status" defval="{{Status}}"> 
+                        <option value="1" selected="selected">启用</option> 
+                    </select>
+
+                </td>
+            </tr>
+            <tr>
+
+                <th>环境</th>
+                <td>
+                    <select class="layui-input" name="Env" defval="{{Env}}">
+                        <option value="">请选择</option>
+                        <option value="1">生产</option>
+                        <option value="2">测试</option>
+                        <option value="3">预发</option>
+                    </select>
+
+                </td>
+                <th>版本</th>
+                <td>
+                    <select class="layui-input" name="CLRVeersion" defval="{{CLRVeersion}}">
+                        <option value="" selected="selected">无托管</option>
+                        <option value="2.0">2.0</option>
+                        <option value="4.0">4.0</option>
+                    </select>
+
+                </td>
+            </tr>
+
+
+            <tr>
+                <th></th>
+                <td colspan="5">
+
+                    <input type='hidden' value='{{Id}}' class='layui-input' name='Id' />
+                    <input type='hidden' value='{{No}}' class='layui-input' name='No' />
+
+                </td>
+            </tr>
+        </table>
+
+    </form>
+</script>
+<script src="~/js/localserver.js"></script>
+<script type="text/javascript">
+    //全局数据对象
+    var ban = new Ban({
+        data: {
+            Search: {
+                SiteName: '', Env: "2",//测试
+                PageSize: 20,
+                Page: 1
+            }, //搜索条件
+            Lst: [], //列表集合,
+            Edit: {},
+            searchcb: "P.HandData",
+            Env: { Env2: "", Env1: "", Env3: "" },
+            LstEnv: [{ key: "1", val: "生产" }, { key: "2", val: "测试" }, { key: "3", val: "预发" }],
+            LstIsCompress: [{ key: "1", val: "是" }, { key: "0", val: "否" }],
+            LstStatus: [{ key: "1", val: "启用" }, { key: "0", val: "禁用" }],
+            SearchUrl: '/site/getsiteinfolist',
+            EditSaveUrl: '/site/SaveSiteInfo',
+            CancelUrl: '/site/Cancel',
+        }
+    });
+    var P = {
+        HandData: (r) => {
+            ban.$data.Lst.forEach(x => {
+                x.primarykey = x.ID;
+                var obj = ban.$data.LstEnv.find(y => y.key == x.Env);
+                if (obj) x.EnvName = obj.val;
+                var obj2 = ban.$data.LstIsCompress.find(y => y.key == x.IsCompress);
+                if (obj2) x.IsCompressName = obj2.val;
+                var obj3 = ban.$data.LstStatus.find(y => y.key == x.Status);
+                if (obj3) x.StatusName = obj3.val;
+
+            });
+        }, 
+        DialogEdit: (i,isclone) => {
+            var data = ban.$data.Edit;
+            if (i >= 0) {
+                data = ban.$data.Lst[i];
+                data.ReadOnly = "readonly=readonly";
+                if (isclone && isclone == 1) {
+                    data.Id = 0; data.No = "";
+                }
+            }
+            else {
+                data = {};
+                data.Id = 0; data.Status = 1;
+            }
+            var html = template('tpl_edit', data);
+            LP.DialogHtml({
+                html: html, h: 450, w: 700,
+                title: " 新增或修改",
+                cb: function () {
+                    var data = $("#fmedit").serializeJson();
+                    if (data.ServerIP.length == 0) { LP.ToastError("服务IP必填"); return false; }
+                    LP.CommonAjax(ban.$data.EditSaveUrl, data, "确认操作吗?", function (r) {
+                        if (r.code == 100) {
+                            BJPL.SearchData(-1);
+                        } else {
+                            top.LP.ToastError(r.message);
+                        }
+                    });
+                }
+            });
+            LP.InitDefval();
+        },
+        //建立站点
+        CreateSite: (no) => {
+            http.get("/site/CreateSite?no=" + no, "").then(r => {
+                LP.ToastCode(r)
+            });
+        },
+        EnableSite: (no, type) => {
+            http.get("/site/EnableSite?no=" + no + "&type=" + type, "").then(r => {
+                LP.ToastCode(r)
+            });
+        },
+        SkipEnv: (env) => {
+            ban.$data.Search.Env = env;
+            ban.$data.Env.Env1 = ""; ban.$data.Env.Env2 = ""; ban.$data.Env.Env3 = "";
+            ban.$data.Env["Env" + env] = "on";
+            BJPL.SearchData(-1);
+        }
+    }
+</script>
+<script type="text/javascript" src="/js/bj-pagelist.js"></script>
+

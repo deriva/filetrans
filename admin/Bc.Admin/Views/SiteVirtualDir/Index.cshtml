@@ -1,0 +1,147 @@
+﻿
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        
+            <div>
+                <form class="layui-form layui-form-pane" action="" id="fm">
+                    <div class="layui-form-item">
+                        <div class='layui-inline'>
+                            <label class='layui-form-label'>站点名称</label>
+                            <div class='layui-input-inline'>
+                                <input type='text' value='' bf-model='Search.SiteName' name='SiteName' class='layui-input' />
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <button type="button" class="layui-btn layui-btn-normal"
+                                    onclick="BJPL.SearchData(0)">
+                                <i class="layui-icon"></i> 搜 索
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+     
+
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-primary layui-btn-sm data-add-btn" onclick="BJPL.DialogEdit(-1, P.DialogEditEx)">
+                <i class="layui-icon">&#xe608;</i> 添加
+            </button>
+        </div>
+        <div class="row">
+            <!--列表页-->
+            <div id="listtable"> </div>
+            <script type="text/html" id="tpl_lsttable">
+                <table class='layui-table'>
+                    <thead class='head'>
+                        <tr>
+
+                            <th>ID</th>
+                            <th>站点编号</th>
+                            <th>站点名称</th>
+                            <th>虚拟目录名称</th>
+                            <th>虚拟路径</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {{each lst as item }}
+                        <tr>
+                            <td>{{item.Id}}</td>
+                            <td>{{item.SiteNo}}</td>
+                            <td>{{item.SiteName}}</td>
+                            <td>{{item.VirtualName}}</td>
+                            <td style="text-align:left">{{item.VirtualDir}}</td>
+
+                            <td>
+
+
+                                <a href='javascript:void(0)' onclick="BJPL.DialogEdit({{$index}})">
+                                    <i class="layui-icon">&#xe642;</i>编辑
+                                </a>
+                                <a href='javascript:void(0)' onclick="BJPL.Cancel({ Id: {{item.Id}}})">
+                                    <i class="layui-icon">&#xe642;</i>取消
+                                </a>
+                            </td>
+
+                        </tr>
+
+                        {{/each}}
+                    </tbody>
+                </table>
+            </script>
+            <div class='pagezone' id='pagezone'></div>
+        </div>
+    </div>
+</div>
+<!--编辑页页-->
+<script type="text/html" id="tpl_edit">
+    <form id="fmedit">
+        <table class='layui-table'>
+            <tr>
+                <th>参数</th>
+                <td>{{Id}}-{{SiteNo}}</td>
+                <th>站点名称</th>
+                <td>
+                    <input type='text' readonly="readonly" value='{{SiteName}}' bf-model='Edit.SiteName' name='SiteName' class='layui-input' />
+                </td>
+            </tr>
+
+            <tr>
+                <th>虚拟目录名称</th>
+                <td>
+                    <input type='text' value='{{VirtualName}}' bf-model='Edit.VirtualName' name='VirtualName' class='layui-input' />
+                </td>
+                <th>虚拟路径</th>
+                <td>
+                    <input type='text' value='{{VirtualDir}}' bf-model='Edit.VirtualDir' name='VirtualDir' class='layui-input' />
+                </td>
+            </tr>
+
+
+            <tr>
+                <th></th>
+                <td colspan="5">
+
+                    <input type='hidden' value='{{Id}}' class='layui-input' name='Id'  bf-model='Edit.Id'/>
+                    <input type='hidden' value='{{SiteNo}}' class='layui-input' name='SiteNo'  bf-model='Edit.SiteNo'/>
+                </td>
+            </tr>
+        </table>
+        <div class="tc">
+            <input class='layui-btn' type='button' value='保存' onclick="BJPL.Submit()">
+        </div>
+    </form>
+</script>
+
+<script type="text/javascript">
+    var proxy;
+    //全局数据对象
+    var ban = new Ban({
+        data: {
+            Search: {
+                SiteName: LP.GetQueryString("SiteName"),
+                SiteNo: LP.GetQueryString("SiteNo"),
+                PageSize: 20,
+                Page: 1
+            }, //搜索条件
+            Lst: [], //列表集合,
+            Edit: {},
+            SearchUrl: '/SiteVirtualDir/GetList',
+            EditSaveUrl: '/SiteVirtualDir/Save',
+            CancelUrl: '',
+        }
+    });
+    var P = {
+        DialogEditEx: function (i) {
+            if (i < 0) {
+                proxy.Edit.SiteName = proxy.Search.SiteName;
+                proxy.Edit.SiteNo = proxy.Search.SiteNo;
+                proxy.Edit.Id = 0;
+            }
+        }
+    }
+</script>
+<script type="text/javascript" src="/js/bj-pagelist.js"></script>
+

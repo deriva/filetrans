@@ -1,0 +1,44 @@
+body { background: #f2f2f2;}
+a{color: #2861bd;}
+.layuimini-container {border: 1px solid #f2f2f2;border-radius: 5px;background-color: #ffffff}
+
+.layuimini-main {margin: 10px 10px 10px 10px;}
+/**必填红点 */
+.layuimini-form>.layui-form-item>.required:after {content: '*';color: red;position: absolute;margin-left: 4px;font-weight: bold;line-height: 1.8em;top: 6px;right: 5px;}
+.layuimini-form>.layui-form-item>.layui-form-label {width: 120px !important;}
+
+.layuimini-form>.layui-form-item>.layui-input-block {margin-left: 150px !important;}
+
+.layuimini-form>.layui-form-item>.layui-input-block>tip {display: inline-block;margin-top: 10px;line-height: 10px;font-size: 10px;color: #a29c9c;}
+
+/**搜索框*/
+.layuimini-container .table-search-fieldset {margin: 0;border: 1px solid #e6e6e6;padding: 10px 20px 5px 20px;color: #6b6b6b;}
+/**自定义滚动条样式 */
+::-webkit-scrollbar {width: 6px;height: 6px}
+
+::-webkit-scrollbar-track {background-color: transparent;-webkit-border-radius: 2em;-moz-border-radius: 2em;border-radius: 2em;}
+
+::-webkit-scrollbar-thumb {background-color: #9c9da0;-webkit-border-radius: 2em;-moz-border-radius: 2em;border-radius: 2em}
+
+.layui-table th {background-color: #f2f2f2;     font-weight: bold;}
+.layui-table td, .layui-table th{text-align: center;padding: 7px 3px !important;}
+.layui-layer-setwin{height: 11px!important;    top: 10px!important;}
+.layui-layer-title{height: 30px!important;line-height: 30px!important;;}
+.layui-table-cell{padding: 0 0!important;}
+.layuimini-container .table-search-fieldset{padding: 3px 5px;}
+.table-search-fieldset .layui-form-pane .layui-form-label{width: auto;}
+.table-search-fieldset  .layui-form-item .layui-inline{margin-right:-7px}
+.layui-btn-container{padding: 3px 8px 0px 8px;}
+.layui-btn-container .layui-btn{margin-bottom: 1px;}
+.table-search-fieldset  .layui-form-item{margin-bottom: 1px!important;}
+.layui-table  thead tr.head{height: 36px;}/*列表的表格头*/
+.layui-form-item .layui-input-inline{width: auto;}
+
+/*基础样式*/
+.tc{text-align: center;}
+
+/*弹窗框样式*/
+.dialogSearchList {    position: absolute;z-index: 100;margin: 0px 10px 20px 0px;background-color: #fff;}
+
+.layui-layout-admin .layui-body { padding-bottom:0;}
+[readonly] { color: #a8abb2; cursor: not-allowed; background-color: #f5f7fa; box-shadow: 0 0 0 1px #e4e7ed inset }

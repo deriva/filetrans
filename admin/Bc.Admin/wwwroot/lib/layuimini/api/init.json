@@ -1,0 +1,67 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": ""
+  },
+  "logoInfo": {
+    "title": "",
+    "image": "/img/logo.png",
+    "href": "/"
+  },
+  "menuInfo": [
+    {
+      "title": "常规管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        
+        {
+          "title": "站点信息",
+          "href": "",
+          "icon": "fa fa-flag-o",
+          "target": "_self",
+          "child": [
+            {
+              "title": "站点管理",
+              "href": "/site/List",
+              "icon": "fa fa-stumbleupon-circle",
+              "target": "_self"
+            },
+            {
+              "title": "发布目录",
+              "href": "/PublicFileDir/public",
+              "icon": "fa fa-viacoin",
+              "target": "_self"
+            },
+            {
+              "title": "Server设备",
+              "href": "/ServerApp/Index",
+              "icon": "fa fa-viacoin",
+              "target": "_self"
+            },
+            {
+              "title": "发布生产",
+              "href": "/PublicFileDir/vn/PublicToServer?Env=1",
+              "icon": "fa fa-viacoin",
+              "target": "_self"
+            },
+            {
+              "title": "发布测试",
+              "href": "/PublicFileDir/vn/PublicToServer?Env=2",
+              "icon": "fa fa-viacoin",
+              "target": "_self"
+            },
+            {
+              "title": "发布预发",
+              "href": "/PublicFileDir/vn/PublicToServer?Env=3",
+              "icon": "fa fa-viacoin",
+              "target": "_self"
+            }
+          ]
+        }
+
+      ]
+    }
+  ]
+}

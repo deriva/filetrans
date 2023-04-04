@@ -1,0 +1,294 @@
+﻿
+@{
+    ViewData["Title"] = "发布站点到服务器";
+}
+
+
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <div class="layui-row">
+            <div class="layui-col-md6">
+
+                <div>
+                    <form class="layui-form layui-form-pane" action="" id="fm">
+                        <div class="layui-form-item">
+                            <div class='layui-inline'>
+                                <label class='layui-form-label'>服务端名称</label>
+                                <div class='layui-input-inline'>
+                                    <input type='text' value='' bf-model='Search.SiteName' name='SiteName' class='layui-input' />
+                                </div>
+                            </div>
+                            <div class='layui-inline'>
+                                <label class='layui-form-label'>环境</label>
+                                <div class='layui-input-inline'>
+                                    <select class="layui-input" name="Env" lay-ignore bf-model='Search.Env' defval="{{Env}}">
+                                        <option value="">请选择</option>
+                                        <option value="1">生产</option>
+                                        <option value="2">测试</option>
+                                        <option value="3">预发</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="layui-inline">
+                                <button type="button" class="layui-btn layui-btn-primary"
+                                        onclick="P.SearchData(0)">
+                                    <i class="layui-icon"></i> 搜 索
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+
+                <div class="row">
+                    <!--列表页-->
+                    <div id="listtable"> </div>
+                    <script type="text/html" id="tpl_lsttable">
+                        <table class='layui-table'>
+                            <thead class='head'>
+                                <tr>
+                                    <th>站点名称</th>
+                                    <th>端口</th>
+                                    <th>服务器</th>
+                                    <th>编号</th>
+                                    <th>
+                                        环境
+                                        <br />
+                                        1生产 2测试
+                                    </th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {{each lst as item }}
+                                <tr>
+                                    <td>{{item.SiteName}}</td>
+                                    <td>{{item.Port}}</td>
+                                    <td>{{item.ServerIP}}</td>
+                                    <td>{{item.No}}</td>
+                                    <td>{{item.EnvName}}</td>
+                                    <td>
+                                        <a href='javascript:void(0)' onclick="P.AddBind({{$index}})">
+                                            <i class="layui-icon">&#xe642;</i>添加
+                                        </a>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </script>
+                    <div class='pagezone' id='pagezone'></div>
+                </div>
+
+            </div>
+
+            <div class="layui-col-md6">
+
+                <div>
+                    <form class="layui-form layui-form-pane" action="" id="fm">
+                        <div class="layui-form-item">
+                            <div class='layui-inline'>
+                                <label class='layui-form-label'>发布站点编号</label>
+                                <div class='layui-input-inline'>
+                                    <input type='text' readonly="readonly" value=''  bf-model='Search2.PublicNo' name='PublicNo' class='layui-input' />
+                                </div>
+                            </div>
+                            <div class='layui-inline'>
+                                <label class='layui-form-label'>发布名称</label>
+                                <div class='layui-input-inline'>
+                                    <input type='text' value='' readonly="readonly"  bf-model='Search2.PublicSiteName' name='PublicSiteName' class='layui-input' />
+                                </div>
+                            </div>
+
+                            <div class="layui-inline">
+                                <button type="button" class="layui-btn layui-btn-primary"
+                                        onclick="P.SearchData2(0)">
+                                    <i class="layui-icon"></i> 搜 索
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+
+                <div class="row">
+                    <!--列表页-->
+                    <div id="listtable2"> </div>
+                    <script type="text/html" id="tpl_lsttable2">
+                        <table class='layui-table'>
+                            <thead class='head'>
+                                <tr>
+                                    <th>服务站点编号</th>
+                                    <th>服务端站点名称</th>
+                                    <th>发布站点编号</th>
+                                    <th>发布站点名称</th>
+
+
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {{each lst as item }}
+                                <tr>
+                                    <td>{{item.ServerNo}}</td>
+                                    <td>{{item.ServerSiteName}}</td>
+                                    <td>{{item.PublicNo}}</td>
+                                    <td>{{item.PublicSiteName}}</td>
+
+                                    <td>
+                                        <a href='javascript:void(0)' onclick="P.Cancel({{$index}})">
+                                            <i class="layui-icon">&#xe642;</i>移除
+                                        </a>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </script>
+                    <div class='pagezone' id='pagezone2'></div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    //全局数据对象
+    var ban = new Ban({
+        data: {
+            Search: {
+                Id: 0, Env:"",
+                SiteName: LP.GetQueryString("PublicSiteName"),
+                PageSize: 20,
+                Page: 1
+            }, //搜索条件
+            Search2: {
+                Id: 0,
+                PublicNo: LP.GetQueryString("PublicNo"),
+                PublicSiteName: LP.GetQueryString("PublicSiteName"),
+                PageSize: 20,
+                Page: 1
+            }, //搜索条件
+            Lst: [], //列表集合,
+            Lst2: [], //列表集合,
+            LstEnv: [{ key: "1", val: "生产" }, { key: "2", val: "测试" }, { key: "3", val: "预发" }],
+            SearchUrl: '/Site/GetSiteInfoList',
+            SearchUrl2: '/PublicFileDir/GetPublicToSiteList',
+            EditSaveUrl: '/PublicFileDir/SavePublicToSite',
+            CancelUrl: '/PublicFileDir/DeletePublicToSite',
+        }
+    });
+    var P = {
+        SearchData: (changepage) => { //初始化搜索数据
+            layer.closeAll();
+            http.get(ban.$data.SearchUrl + "?" + LP.ParseParams(ban.$data.Search), "").then(r => {
+                layer.closeAll();
+                if (r.code == 100) {
+                    var lst = r.attr.DataSource;
+                    lst.forEach(x => {
+                        var obj = ban.$data.LstEnv.find(y => y.key == x.Env);
+                        if (obj) x.EnvName = obj.val;
+                    });
+                    
+
+                    ban.$data.Lst =lst ;
+                    P.ReaderData("tpl_lsttable", "listtable", ban.$data.Lst);
+                    if (changepage == 0) {
+                        layui.use('laypage', function () {
+                            var laypage = layui.laypage;
+                            laypage.render({
+                                elem: 'pagezone', //分页容器的id
+                                count: r.attr.TotalCount, //数据总数
+                                limit: ban.$data.Search.PageSize, //每页显示的数据条数
+                                skin: '#1E9FFF', //自定义选中色值
+                                layout: ['page', 'count'],
+                                jump: function (obj, first) {
+                                    if (!first) {
+                                        ban.$data.Search.Page = obj.curr;
+                                        P.SearchData(1);
+                                        layer.msg('第' + obj.curr + '页', {
+                                            offset: 'b'
+                                        });
+                                    }
+                                }
+                            });
+                        });
+                    }
+                } else {
+                    ban.$data.Lst = [];
+                    P.ReaderData("tpl_lsttable", "listtable", ban.$data.Lst);
+                }
+            });
+        },
+        //渲染列表数据
+        ReaderData: (id, id2, lst) => {
+            var html = template(id, {
+                lst: lst
+            });
+            document.querySelector('#' + id2).innerHTML = html;
+            //涉及到权限的  在此重新渲染
+        },
+        SearchData2: (changepage) => { //初始化搜索数据
+            layer.closeAll();
+            http.get(ban.$data.SearchUrl2 + "?" + LP.ParseParams(ban.$data.Search2), "").then(r => {
+                layer.closeAll();
+                if (r.code == 100) {
+                    ban.$data.Lst2 = r.attr;
+                    P.ReaderData("tpl_lsttable2", "listtable2", ban.$data.Lst2);
+
+                } else {
+                    LP.ToastError(r.message + "：暂无数据");
+                }
+            });
+        },
+        AddBind: (i) => {//添加绑定
+            var info = {};
+            var sub = ban.$data.Lst[i];
+            info.PublicNo = ban.$data.Search2.PublicNo;
+            info.PublicSiteName = ban.$data.Search2.PublicSiteName;
+            info.ServerNo = sub.No;
+            info.ServerSiteName = sub.SiteName;
+            http.post(ban.$data.EditSaveUrl, info).then(r => {
+                if (r.code == 100) {
+                    P.SearchData2(0)
+                } else {
+                    var layindex = layer.alert(r.message, function () {
+                        layer.close(layindex);
+                    });
+                }
+            });
+
+        },
+        Cancel: (i) => {
+            http.post(ban.$data.CancelUrl, ban.$data.Lst2[i]).then(r => {
+                if (r.code == 100) {
+                    P.SearchData2(0)
+                } else {
+                    var layindex = layer.alert(r.message, function () {
+                        layer.close(layindex);
+                    });
+                }
+            });
+
+        }
+
+    }
+
+    $(() => {
+        P.SearchData(0);
+        P.SearchData2(0) 
+    });
+</script>
+
+
+
+
