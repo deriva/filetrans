@@ -1,0 +1,123 @@
+﻿
+<div class="layuimini-container">
+    <div class="layuimini-main"> 
+        <div>
+            <form class="layui-form layui-form-pane" action="" id="fm">
+                <div class="layui-form-item">
+                    <div class='layui-inline'>
+                        <label class='layui-form-label'>发布编号</label>
+                        <div class='layui-input-inline'>
+                            <input type='text' value='' bf-model='Search.PublicNo' name='PublicNo' class='layui-input' />
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <button type="button" class="layui-btn layui-btn-primary"
+                                onclick="BJPL.SearchData(0)">
+                            <i class="layui-icon"></i> 搜 索
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-normal" onclick="BJPL.DialogEdit(-1)"
+                    op-id="Operate_Edit">
+                <i class="layui-icon">&#xe608;</i> 添加
+            </button>
+        </div>
+        <div class="row">
+            <!--列表页-->
+            <div id="listtable"> </div>
+            <script type="text/html" id="tpl_lsttable">
+                <table class='layui-table'>
+                    <thead class='head'>
+                        <tr>
+
+                            <th>ID</th>
+                            <th>发布编号</th>
+                            <th>路径</th>
+
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {{each lst as item }}
+                        <tr>
+                            <td>{{item.Id}}</td>
+                            <td>{{item.PublicNo}}</td>
+                            <td>{{item.Dir}}</td>
+
+                            <td>
+
+                                <a href='javascript:void(0)' onclick="BJPL.DialogEdit({{$index}})">
+                                    <i class="layui-icon">&#xe642;</i>编辑
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {{/each}}
+                    </tbody>
+                </table>
+            </script>
+            <div class='pagezone' id='pagezone'></div>
+        </div>
+    </div>
+</div>
+<!--编辑页页-->
+<script type="text/html" id="tpl_edit">
+    <form id="fmedit">
+        <table class='layui-table'>
+            <tr>
+                <th>发布编号</th>
+                <td>{{PublicNo}}</td>
+                <th>站点名称</th>
+                <td>
+                    <input type='text' value='{{Dir}}' bf-model='Search.Dir' name='Dir' class='layui-input' />
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <th></th>
+                <td colspan="5">
+
+                    <input type='hidden' value='{{Id}}' class='layui-input' name='Id' />
+                    <input type='hidden' value='{{PublicNo}}' class='layui-input' name='PublicNo' />
+
+                </td>
+            </tr>
+        </table>
+        <div class="tc">
+            <input class='layui-btn' type='button' value='保存' onclick="BJPL.Submit()">
+        </div>
+    </form>
+</script>
+
+<script type="text/javascript">
+    //全局数据对象
+    var ban = new Ban({
+        data: {
+            Search: {
+                PublicNo: LP.GetQueryString("PublicNo"),
+                PageSize: 2000,
+                Page: 1
+            }, //搜索条件
+            Lst: [], //列表集合,
+            SearchUrl: '/PublicFileDir/GetSitePublicExcludeDir',
+            EditSaveUrl: '/PublicFileDir/SavePublicFileDir',
+            CancelUrl: '',
+        }
+    });
+    var P = {
+
+    }
+</script>
+<script type="text/javascript" src="/js/bj-pagelist.js"></script>
+
