@@ -8,6 +8,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -20,15 +21,15 @@ namespace Bc.PublishWF.V3._0
             InitializeComponent();
         }
 
-  /// <summary>
-  /// 启动
-  /// </summary>
-  /// <param name="sender"></param>
-  /// <param name="e"></param>
+        /// <summary>
+        /// 启动
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnEnable_Click(object sender, EventArgs e)
-        { 
+        {
             Bc.PublishWF.Biz.V3.FileServerV3.Init();
-            btnEnable.Enabled =false;
+            btnEnable.Enabled = false;
             btnStop.Enabled = true;
         }
         /// <summary>
@@ -69,7 +70,7 @@ namespace Bc.PublishWF.V3._0
         private void btnTest_Click(object sender, EventArgs e)
         {
             new TestFm().Show();
-         //   this.Hide();
+            //   this.Hide();
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -95,9 +96,23 @@ namespace Bc.PublishWF.V3._0
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Task.Factory.StartNew(() => {
-                this.Close();
-            }); 
+            var that = this;
+            Thread thread1 = new Thread(() =>
+            {
+                try
+                {
+                    if (that.InvokeRequired)
+                        that.Invoke(new Action(() =>
+                        {
+
+                            if (!that.IsDisposed) that.Close();
+                        }));
+                    else that.Close();
+                }
+                catch { }
+            });
+            thread1.Start();
+
         }
     }
 }

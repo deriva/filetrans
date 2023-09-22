@@ -57,7 +57,7 @@ namespace Bc.PublishWF.Common
         /// <param name="type">1启动 2停止 3移除</param>
         public static int EnableSite(string sitename, string poolname, int type)
         {
-           
+
             try
             {
                 Task.Factory.StartNew(() =>
@@ -73,16 +73,16 @@ namespace Bc.PublishWF.Common
                             if (type == 1)
                             {
                                 appPool.Start();
-                                Console.WriteLine("启动应用程序池:" + poolname);
+                                ControlHelper.AddMsg("启动应用程序池:" + poolname);
                             }
                             else if (type == 2)
                             {
-                                Console.WriteLine("停止应用程序池:" + poolname);
+                                ControlHelper.AddMsg("停止应用程序池:" + poolname);
                                 appPool.Stop();
                             }
                             else if (type == 3)
                             {
-                                Console.WriteLine("移除应用程序池:" + poolname);
+                                ControlHelper.AddMsg("移除应用程序池:" + poolname);
                                 sm.ApplicationPools.Remove(appPool);
                             }
                             r += 1;
@@ -94,34 +94,39 @@ namespace Bc.PublishWF.Common
                         {
                             if (type == 1)
                             {
-                                Console.WriteLine("启动站点:" + sitename);
+                                ControlHelper.AddMsg("启动站点:" + sitename);
                                 site.Start();
                             }
                             else if (type == 2)
                             {
-                                Console.WriteLine("停止站点:" + sitename);
+                                ControlHelper.AddMsg("停止站点:" + sitename);
                                 site.Stop();
                             }
                             else if (type == 3)
                             {
-                                Console.WriteLine("移除站点:" + sitename);
+                                ControlHelper.AddMsg("移除站点:" + sitename);
                                 sm.Sites.Remove(site);
                             }
                             r += 1;
                         }
+                        else
+                        {
+                            ControlHelper.AddMsg($"站点:{sitename}不存在");
+                        }
 
                         if (r > 0)
                         {
-                            sm.CommitChanges(); 
+                            sm.CommitChanges();
                         }
                     }
 
-                }); 
+                });
 
             }
             catch (Exception ex)
             {
                 LogHelper.Error("EnableSite:" + ex.ToStr());
+                ControlHelper.AddMsg($"站点:{sitename},操作:{type}(1启动 2停止 3移除),异常:{ex.Message}");
                 return 0;
             }
             return 1;
@@ -184,7 +189,7 @@ namespace Bc.PublishWF.Common
                 //最大工作进程数
                 appPool.ProcessModel.MaxProcesses = 1;
                 appPool.ProcessModel.IdentityType = ProcessModelIdentityType.ApplicationPoolIdentity;
-                Console.WriteLine("创建应用程序池:" + appPoolName);
+                ControlHelper.AddMsg("创建应用程序池:" + appPoolName);
                 r = 1;
             }
             catch (Exception ex) { LogHelper.Error("CreateAppPool：" + ex.ToStr()); }
@@ -200,6 +205,7 @@ namespace Bc.PublishWF.Common
         private static int CreateWebSite(SiteCollection sites, IISWebSite webSite, string physicalPath)
         {
             var r = 0;
+            var siteName = webSite.SiteName;
             try
             {
                 Site site = null;
@@ -232,9 +238,14 @@ namespace Bc.PublishWF.Common
                 //  root.VirtualDirectories["/"].PhysicalPath = pathToRoot;
                 //预加载
                 root.SetAttributeValue("preloadEnabled", true);
-                Console.WriteLine("创建站点:" + webSite.PoolName);
+                ControlHelper.AddMsg("创建站点:" + webSite.PoolName);
             }
-            catch (Exception ex) { LogHelper.Error("CreateWebSite：" + ex.ToStr()); }
+            catch (Exception ex)
+            {
+                LogHelper.Error("CreateWebSite：" + ex.ToStr());
+
+                ControlHelper.AddMsg($"siteName:{ex.ToStr()}");
+            }
             return r;
         }
         /// <summary>

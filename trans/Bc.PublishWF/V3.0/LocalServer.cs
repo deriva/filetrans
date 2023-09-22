@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -99,8 +100,8 @@ namespace Bc.PublishWF.V3._0
                                 if (view == "txttoimg")
                                 {
                                     var obj = JObject.Parse(data.ToStr());
-                                    var html = obj["html"].ToStr(); 
-                                    var savepath= new TxtToImgHelper().ConvertToImg(html);
+                                    var html = obj["html"].ToStr();
+                                    var savepath = new TxtToImgHelper().ConvertToImg(html);
                                     resp_data = ResultHelper.ToResponse(1, savepath).ToResult();
                                 }
                                 break;
@@ -133,10 +134,23 @@ namespace Bc.PublishWF.V3._0
 
         private void LocalServer_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Task.Factory.StartNew(() =>
+            var that = this;
+            Thread thread1 = new Thread(() =>
             {
-                this.Close();
+                try
+                {
+                    if (that.InvokeRequired)
+                        that.Invoke(new Action(() =>
+                        {
+                            if (!that.IsDisposed)
+                                that.Close();
+                        }));
+                    else that.Close();
+                }
+                catch { }
             });
+            thread1.Start();
+
         }
 
         private void LocalServer_Load(object sender, EventArgs e)
