@@ -46,7 +46,7 @@ namespace Bc.Admin
                 options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
             });
             //注册REDIS 服务
-             RedisServer.Initalize();
+             //RedisServer.Initalize();
         }
         public class DatetimeJsonConverter : JsonConverter<DateTime>
         {
