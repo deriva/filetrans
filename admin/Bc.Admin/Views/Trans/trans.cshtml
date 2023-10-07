@@ -1,0 +1,162 @@
+﻿<style type="text/css">
+    .main { width: 100%; height: 90%; position: fixed; background-color: #fff; }
+    .ifrtree { width: 100%; height: 100%; }
+    .rbborder { border-right: 1px dotted green; }
+    .ul3 li { float: left; margin: 5px; width: 240px; overflow: hidden; font-size: 12px; font-weight: bolder; padding: 2px 5px; border: 1px solid rgb(128 128 128 / 0.31); height: 30px; line-height: 30px; }
+    .ul3 li:hover { background-color: #00800065; color: #fff; font-weight: 700; }
+
+    #listtable3 { max-height: 900px; overflow: scroll; }
+    #listtable3 { border: 1px solid rgb(128 128 128 / 0.44); border-radius: 2px; display: flex; padding: 1px; }
+    #listtable3 .card { overflow-x: scroll; margin: 2px; padding: 2px; height: 30px; line-height: 30px; word-break: break-all; word-wrap: break-word; }
+    .layui-card { border: 1px dotted green; }
+    .w100 { width: 100px; }
+    #messagesList { background-color: black; }
+    #messagesList li {max-height:700px;overflow:scroll;  border-bottom: 1px dotted green; color: #fff; }
+    #lsttableAlias td { cursor: pointer; }
+    #lsttableAlias .on { background-color: green; color: #fff; }
+    .h95 { height: 100%; overflow: scroll; }
+    .p100 { padding-bottom: 60px; }
+    #messagesList { padding: 3px 10px; }
+</style>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <div class="layui-row ">
+
+            <div class="layui-col-md12">
+                <form class="layui-form  " action="" id="fm">
+                    <div class="layui-form-item">
+                        <div class='layui-form-item'> 
+                            <div >
+                                <textarea class="layui-textarea" bf-model="Info.cmd" id="cmd" placeholder="指令"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item"> 
+                            <div >
+                                <button type="button" class="layui-btn btndanger"
+                                        onclick="P.Sysnc(0)">
+                                    执行 
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <h2>日志信息</h2>
+                    <hr />
+                    <!-- 显示消息的列表 -->
+                    <ul id="messagesList"></ul>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+</div>
+
+
+@* <script src="/content/lib/signalr.js"></script>
+<script type="text/javascript">
+
+    var conn = new signalR.HubConnectionBuilder().withUrl("/hub").build();
+
+    // 在连接上监听服务端的 ReceiveMessage 方法
+    conn.on("ReceiveSynDBMsg", (message) => {
+        // 接收到消息时打印输出
+        console.log(`Received message from : ${message}`);
+        const msg = document.createElement('li');
+        msg.textContent = ` ${message}`;
+        if ($("#messagesList li").length > 200) {
+            $("#messagesList li").eq(-1).remove();
+        }
+        document.getElementById('messagesList').prepend(msg);
+    });
+
+    conn.start().catch(err => console.log(err));
+
+
+
+</script>*@
+<script type="text/javascript">
+    var ban = new Ban({
+        data: {
+            Search: {
+            }, //搜索条件
+            Info: {
+                cmd: ""
+            },
+            SearchUrl: '/trans/Bat'
+        }
+    });
+    var P = {
+
+        //开启同步
+        Sysnc: () => {
+            layer.confirm('确定同步【表结构】吗,请检查配置是否有误，请继续？', {
+                btn: ['确定', '取消']
+            }, function () {
+                document.getElementById('messagesList').innerHTML = "";
+                layer.closeAll();
+                var lst = $("#cmd").val();
+                var arr = [lst];
+                layindex = layer.msg('正在努力加载中......', {
+                    icon: 16, time: 0,
+                    shade: 0.21
+                });
+                P.ExecCmd(arr, () => {
+                    layer.closeAll();
+                }, -1);
+            }, function () {
+                layer.closeAll();
+            }, function () {
+                layer.closeAll();
+            });
+
+        },
+        ExecCmd: (cmdArr, cb, i) => {
+            i++;
+            if (cmdArr.length > i) {
+           
+            } else {
+                cb();
+                return;
+
+            }
+            var data = { cmd: cmdArr[i] };
+            $.post(ban.$data.SearchUrl, data, function (r) {
+                P.AddMsg(r.message);
+                P.ExecCmd(cmdArr, cb, i); 
+            });
+        },
+        AddMsg: (message) => {
+            const msg = document.createElement('li');
+            msg.innerHTML = ` ${message}`;
+            if ($("#messagesList li").length > 200) {
+                $("#messagesList li").eq(-1).remove();
+            }
+            document.getElementById('messagesList').prepend(msg);
+        }
+
+    }
+
+    $(() => {
+
+    });
+    var resizeTimer = null;
+
+    $(window).resize(function () {
+        if (resizeTimer) {
+            clearTimeout(resizeTimer);
+        }
+        resizeTimer = setTimeout(function () {
+            //   P.CalcHeight();
+
+        }, 100)
+    })
+</script>
+
