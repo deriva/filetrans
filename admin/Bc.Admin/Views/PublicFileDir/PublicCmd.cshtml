@@ -1,0 +1,164 @@
+﻿<style>
+    .editzone { background-color: #fff; padding: 0px; border: 1px dotted green }
+    .listzone { background-color: #fff; padding: 10px; border: 1px dotted green }
+    .cmdinfo{max-height:120px;overflow:scroll;}
+</style>
+<div class=" ">
+    <div class="  ">
+
+        <div class="row">
+            <div class="layui-col-md12 editzone">
+                <form class="layui-form  " action="" id="fm">
+                    <table class="layui-table">
+                        <tr >
+                            <th >Id</th>
+                            <td >
+                                <input class="layui-input" readonly="readonly" bf-model="Edit.Id" placeholder="标题"  />
+                            </td>
+            
+                            <th >分组</th>
+                            <td  >
+                                <input class="layui-input" bf-model="Edit.GroupName" placeholder="" />
+                            </td>
+                            <th>排序</th>
+                            <td>
+                                <input class="layui-input" bf-model="Edit.Sorter" placeholder="" />
+                            </td>
+                        </tr>
+                        <tr >
+                            <th  >指令</th>
+                            <td colspan="5">
+                                <textarea class="layui-textarea" bf-model="Edit.Cmd" placeholder="执行指令"></textarea>
+                            </td>
+                        </tr> 
+                        <tr >
+                            <td ></td>
+                            <td colspan="5">
+                                <button type="button" class="layui-btn layui-btn-sm  layui-btn-radius"
+                                        onclick="location.reload()">
+                                    刷新
+                                </button>
+                                <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-danger"
+                                        onclick="P.DialogEdit(0)">
+                                    新增
+                                </button> 
+                                <button type="button" class="layui-btn layui-btn-sm  layui-btn-radius"
+                                        onclick="P.SaveMigrateTable(0)">
+                                    保存
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <!--列表页-->
+            <div class="layui-col-md12 listzone">
+                <table class='layui-table'>
+                    <thead class='head'>
+                        <tr>
+                            <th>ID</th>
+
+                            <th>组</th>
+                            <th>指令</th>
+                            <th>排序</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listtable">
+                    </tbody>
+                </table>
+            </div>
+            <script type="text/html" id="tpl_lsttable">
+                {{each lst as item }}
+                <tr>
+                    <td>{{item.Id}}</td>
+                    <td>{{item.GroupName}}</td>
+                    <td style="text-align:left;max-height:300px;">
+                      <div class="cmdinfo"> <pre>{{item.Cmd}}</pre></div> </td>
+                      <td>{{item.Sorter}}
+
+                      </td>
+                    <td>
+
+                        <a href='javascript:void(0)' onclick="P.DialogEdit('{{item.Id}}')" op-id="operate_edit">
+                            编辑
+                        </a>
+                        <a href='javascript:void(0)' onclick="BJPL.Cancel({id:'{{item.Id}}'})" op-id="operate_edit">
+                            删除
+                        </a>
+                    </td>
+                </tr>
+                {{/each}}
+                {{if lst.length==0}}
+                <tr>
+                    <td colspan="10" class="tc">
+                        <img src="/content/images/dataempty.png" />
+                    </td>
+                </tr>
+                {{/if}}
+            </script>
+
+
+          
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    //全局数据对象
+    var ban = new Ban({
+        data: {
+            Search: {
+                PublicNo: LP.GetQueryString("PublicNo"),
+                PageSize: 2000,
+                Page: 1
+            }, //搜索条件
+            Lst: [], //列表集合,
+            Edit: {
+                Id:0,
+                PublicNo: LP.GetQueryString("PublicNo"),
+                GroupName: "", Sorter:9999,
+                Cmd:""
+            },
+            SearchUrl: '/PublicFileDir/PublicCmdList',
+            EditSaveUrl: '/PublicFileDir/SavePublicCmd',
+            CancelUrl: '/PublicFileDir/DeletePublicCmd',
+        }
+    });
+    var P = {
+        DialogEdit: (id) => {
+            var data = ban.$data.Edit;
+            if (id > 0) {
+                var info = ban.$data.Lst.find(x => x.Id == id);
+                for (var it in info)
+                    ban.$data.Edit[it] = info[it];
+            }
+            else {
+                ban.$data.Edit.Id = 0;
+                ban.$data.Edit.Cmd = "";
+                ban.$data.Edit.GroupName = ""; 
+            }
+
+
+        },
+        SaveMigrateTable: function () {
+            var data = ban.$data.Edit;
+            if (data.Id >= 0) {
+
+            } else {
+              
+            }
+            $.post(ban.$data.EditSaveUrl, data, function (r) {
+                top.LP.ToastCode(r);
+                if (r.code == 100) {
+                    window.location.reload();
+                    layer.closeAll();
+                }
+            });
+        },
+
+    }
+</script>
+<script type="text/javascript" src="/js/bj-pagelist.js"></script>
+

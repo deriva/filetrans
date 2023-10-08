@@ -49,7 +49,12 @@
                             <td style="text-align:left">{{item.Path}}</td>
                             <td>
                                 <a href='javascript:void(0)' onclick="ls.PublicSite('{{item.PublicNo}}', {{item.Env}});">
-                                    <i class="layui-icon">&#xe642;</i>发布
+                                    <i class="layui-icon">&#xe642;</i>本地发布
+                                </a>
+                                 <a href='javascript:void(0)'
+                                  onclick="P.DialogTrans('{{item.PublicNo}}','{{item.SiteName}}')"
+                                 >
+                                    <i class="layui-icon">&#xe642;</i>指令发布
                                 </a>
                             </td>
 
@@ -87,6 +92,10 @@
             ban.$data.Lst.forEach(x => {
                 x.Env = LP.GetQueryString("env");
             });
+        },
+        DialogTrans: (PublicNo, SiteName) => {
+            var url = '/trans/trans?PublicNo='+PublicNo+'&PublicSiteName='+SiteName+'&Env=' + LP.GetQueryString("env")
+            top.LP.DialogRb(url, 0, 0, PublicNo + '-' + SiteName+'-'+ban.$data.EnvName, 2)
         }
     }
 </script>

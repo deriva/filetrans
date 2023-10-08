@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Bc.Common.Utilities;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -157,32 +158,32 @@ namespace Bc.Common.Helpers
         }
 
         #region 转换为string字符串类型
-        /// <summary>
-        ///  转换为string字符串类型
-        /// </summary>
-        /// <param name="s">获取需要转换的值</param>
-        /// <param name="format">需要格式化的位数</param>
-        /// <returns>返回一个新的字符串</returns>
-        public static string ToStr(this object s, string format = "")
-        {
-            string result = "";
-            try
-            {
-                if (s == null) return "";
-                if (string.IsNullOrWhiteSpace(format))
-                {
-                    result = s.ToString();
-                }
-                else
-                {
-                    result = string.Format("{0:" + format + "}", s);
-                }
-            }
-            catch
-            {
-            }
-            return result;
-        }
+        ///// <summary>
+        /////  转换为string字符串类型
+        ///// </summary>
+        ///// <param name="s">获取需要转换的值</param>
+        ///// <param name="format">需要格式化的位数</param>
+        ///// <returns>返回一个新的字符串</returns>
+        //public static string ToStr(this object s, string format = "")
+        //{
+        //    string result = "";
+        //    try
+        //    {
+        //        if (s == null) return "";
+        //        if (string.IsNullOrWhiteSpace(format))
+        //        {
+        //            result = s.ToString();
+        //        }
+        //        else
+        //        {
+        //            result = string.Format("{0:" + format + "}", s);
+        //        }
+        //    }
+        //    catch
+        //    {
+        //    }
+        //    return result;
+        //}
         #endregion
 
 
@@ -217,5 +218,6 @@ namespace Bc.Common.Helpers
             var deserializeSettings = new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace };
             return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(source), deserializeSettings);
         }
+
     }
 }

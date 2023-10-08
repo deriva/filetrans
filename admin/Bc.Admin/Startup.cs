@@ -1,4 +1,6 @@
-﻿using Bc.Common.Redis;
+﻿using Bc.Bussiness.Extensions;
+using Bc.Common;
+using Bc.Common.Redis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +19,7 @@ namespace Bc.Admin
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            GlobalContext.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -28,6 +31,8 @@ namespace Bc.Admin
            // services.AddControllersWithViews().AddControllersAsServices();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages().AddRazorRuntimeCompilation();
+            services.AddSignalR();
+            GlobalContext.Services = services;
             services.AddMvc().AddJsonOptions(options =>
             {
 
@@ -94,6 +99,15 @@ namespace Bc.Admin
                     name: "ToolsVN",
                     pattern: "{controller=Home}/{action=vn}/{id?}");
             });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<SignalRHub>("/hub");
+
+
+
+            });
+            GlobalContext.ServiceProvider = app.ApplicationServices;
         }
 
 
