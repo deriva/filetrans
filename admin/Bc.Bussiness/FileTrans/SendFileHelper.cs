@@ -18,9 +18,9 @@ namespace Bc.Bussiness.FileTrans
             //var obj = JObject.Parse(msg.ToStr());
             //var publicno = obj["no"];
             //var env = obj["env"].ToStr();
-            var root = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\Resources\filetranstemprar.txt");
-            if (!Directory.Exists(root))
-                Directory.CreateDirectory(root);
+            var dir =  (AppDomain.CurrentDomain.BaseDirectory + @"\Resources\");
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
 
             //var dt = HttpSiteHelper.DoGet("/PublicFileDir/GetPublicFileDirByNoV2", $"no={publicno}&env={env}");
             //var re = JObject.Parse(dt)["attr"].ToStr();

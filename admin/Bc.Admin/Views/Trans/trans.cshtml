@@ -91,8 +91,7 @@
 
 
 </div>
- 
-<script src="~/js/localserver.js?v=12"></script>
+<script src="~/js/remoteserver.js?v=23ddd"></script> 
 <script type="text/javascript">
     var ban = new Ban({
         data: {
@@ -200,7 +199,7 @@
             document.getElementById('messagesList').prepend(msg);
         },
         PublicSite:()=>{
-            ls.PublicSite(ban.$data.Serach.PublicNo, ban.$data.Serach.Env)
+            remoteserver.PublicSite(ban.$data.Search.PublicNo, ban.$data.Search.Env)
         }
 
     }

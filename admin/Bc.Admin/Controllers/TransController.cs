@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using Org.BouncyCastle.Ocsp;
+using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -35,13 +36,20 @@ namespace Bc.Admin.Controllers
         [HttpPost]
         public IActionResult Bat()
         {
-            var cmd = Request.Form["cmd"].ToStr();
+            try
+            {
+                var cmd = Request.Form["cmd"].ToStr();
 
-            var r = BatHelper.Exec(cmd);
-            Regex reg = new Regex("\r\n");
-            r = reg.Replace(r, "<br/>");
-
-            return Json(JsonHelper.JsonObject(true, r));
+                var r = BatHelper.Exec(cmd);
+                Regex reg = new Regex("\r\n");
+                r = reg.Replace(r, "<br/>");
+                return Json(JsonHelper.JsonObject(true, r));
+            }
+            catch(Exception ex)
+            {
+                return Json(JsonHelper.JsonObject(false, ex.Message));
+            }
+    
         }
         /// <summary>
         /// 发布站点

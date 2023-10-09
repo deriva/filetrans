@@ -696,8 +696,12 @@ namespace Bc.Common.Helpers
         public static List<string> GetFiles(string dir, string regexPattern = null, bool recurse = false, bool throwEx = false)
         {
             List<string> lst = new List<string>();
-            var expt = File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\ignore.txt").ToList();
-            if (expt == null) expt = new List<string>();
+            var ingorePath = AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\ignore.txt";
+            var expt = new List<string>();
+            if (File.Exists(ingorePath)) expt = File.ReadAllLines(ingorePath).ToList();
+
+
+            if (expt == null) expt = expt = new List<string>();
             try
             {
                 foreach (string item in Directory.GetFileSystemEntries(dir))
