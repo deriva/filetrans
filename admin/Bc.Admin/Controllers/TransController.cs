@@ -28,6 +28,10 @@ namespace Bc.Admin.Controllers
             biz = new SiteInfoService();
             bizCmd = new PublicCmdService();
         }
+        public IActionResult BatCommon()
+        {
+            return View();
+        }
         public IActionResult Trans()
         {
             return View();

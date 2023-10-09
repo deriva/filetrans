@@ -1,0 +1,107 @@
+﻿<style type="text/css">
+    .main { width: 100%; padding: 10px; overflow: scroll; background-color: gray; }
+</style>
+<div class="main">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">编译发布</div>
+                <div class="layui-card-body">
+                    <pre class="layui-code">
+dotnet publish -c Release -r win-x64 -o 目录   -f net6.0
+eg:
+ dotnet publish -c Release -r win-x64 -o E:\publicdir\SchoolSite\   -f net6.0
+            </pre>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">前端编译</div>
+                <div class="layui-card-body">
+                    <pre class="layui-code">
+E:
+cd E:\project\code\SchoolWeb
+git pull
+npm run build:dev   --发布开发环境
+npm run build:pro   --发布生成环境环境
+            </pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">完整demo</div>
+                <div class="layui-card-body">
+                    <pre class="layui-code">
+E:
+cd E:\project\code\SchoolWeb
+git pull
+npm run build:dev   --发布开发环境
+npm run build:pro   --发布生成环境环境
+
+
+E:
+cd xxxxx
+
+del E:\publicdir\xx\\*.* /f/s/q/a
+
+dotnet publish -c Release -r win-x64 -o xxxx   -f net6.0  --self-contained false
+
+cd xxx
+
+rem E:
+rem cd E:\project\code\xx
+for /r %%f in (*.htm) do del %%f
+
+for /r %%f in (*.config) do del %%f
+
+for /r %%f in (*.json) do del %%f
+for /r %%f in (*.zip) do del %%f
+for /r %%f in (Serilog*.dll) do del %%f
+for /r %%f in (System*.dll) do del %%f
+
+
+for /r %%f in (*.zip) do del %%f
+
+for /r %%f in (*.rar) do del %%f
+
+for /r %%f in (*.7z) do del %%f
+del runtimes\* /q /f /s  
+for /r %%f in (Microsoft*.dll) do del %%f 
+for /r %%f in (Volo.Abp.*.dll) do del %%f 
+
+            </pre>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header"> 删除指定文件</div>
+                <div class="layui-card-body">
+                    <pre class="layui-code"> 
+del /f /s /q Microsoft*.dll
+del /f /s /q System*.dll
+del /f /s /q Nito*.dll
+del /f /s /q Serilog*.dll
+del /f /s /q Volo*.dll
+del /f /s /q web.config 
+del /f /s /q Nito*.dll
+del /f /s /q Serilog*.dll
+del /f /s /q Volo*.dll
+
+            </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+
+<!-- 记得引入 layui.js -->
+<script>
+    layui.use('code', function () {
+        layui.code();
+    });
+</script>
