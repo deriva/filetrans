@@ -17,7 +17,7 @@ var remoteserver = {//localserver
     CreateIIS_Site: (no) => {
         http.get("/site/GetIISWebSite?no=" + no, "").then(r => {
             if (r.code == 100) {
-                var obj = ls.GetIISData(r);
+                var obj = remoteserver.GetIISData(r);
                 obj.cmd = "IIS_Create";
                 remoteserver.Call(obj);
             }

@@ -55,7 +55,11 @@ namespace Bc.PublishWF.V3._0
                 frm.WindowState = FormWindowState.Maximized;
                 frm.Show();
             }
-            else { frm.Activate(); }
+            else
+            {
+                frm.Activate();
+            }
+   
         }
 
         private void 本地http服务ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -73,6 +77,7 @@ namespace Bc.PublishWF.V3._0
             {
                 frm.Activate();
             }
+   
         }
 
         private Form GetForm(string name)
