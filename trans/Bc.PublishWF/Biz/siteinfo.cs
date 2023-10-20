@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bc.PublishWF.Biz
 {
-   public class siteinfo
+    public class siteinfo
     {
         public int id { get; set; }
         public string sitename { get; set; }
@@ -26,7 +26,7 @@ namespace Bc.PublishWF.Biz
         public int id { get; set; }
         public string sitename { get; set; }
         public string excludedir { get; set; }
-     
+
     }
 
 
@@ -118,7 +118,7 @@ namespace Bc.PublishWF.Biz
         /// 默认 : 
         /// </summary>
         [Display(Name = "站点发布排除的目录")]
-     
+
         public int Id { get; set; }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace Bc.PublishWF.Biz
         /// 空值 : False
         /// 默认 : 
         /// </summary>
- 
+
         public int Id { get; set; }
 
         /// <summary>
@@ -216,5 +216,18 @@ namespace Bc.PublishWF.Biz
         [Display(Name = "是否压缩")]
         public int? IsCompress { get; set; }
 
+
+        /// <summary>
+        /// 是否是IIS站点  1/0是  2是.netcore直接启动的站点
+        /// </summary>
+        public int? IsIIS { get; set; }
+
+        /// <summary>
+        /// 如果是直接启动的  那这里是启动的指令
+        /// </summary>
+        public string StartCmd
+        {
+            get; set;
+        }
     }
 }

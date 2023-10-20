@@ -136,6 +136,7 @@
     <Compile Include="Biz\V3\CmdSiteBiz.cs" />
     <Compile Include="Biz\V3\FileClientV3.cs" />
     <Compile Include="Biz\V3\FileServerV3.cs" />
+    <Compile Include="Common\BatHelper.cs" />
     <Compile Include="Common\ControlHelper.cs" />
     <Compile Include="Common\Enums\cmdtype.cs" />
     <Compile Include="Common\IISSiteHelper.cs" />

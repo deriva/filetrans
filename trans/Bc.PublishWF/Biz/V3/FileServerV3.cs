@@ -269,16 +269,31 @@ namespace Bc.PublishWF.Biz.V3
                 }
                 var target = info.SiteDir;//移到到的站点
                 client.Close();
-                StartOrStopWebsite(sitename, false);//关闭站点
-                Thread.Sleep(3000);
+                if (info.IsIIS.ToInt(1) == 1)//如果是IIS站点
+                {
+                    StartOrStopWebsite(sitename, false);//关闭站点
+                    Thread.Sleep(2000);
 
-                ControlHelper.AddMsg($"开始移动文件到站点[{sitename}]......");
-                //移动文件
-                FileCommonHelper.FileMove(roodir, target, null, null, "", true);
-             
-                Thread.Sleep(3000);
-                StartOrStopWebsite(sitename, true);//开启站点站点 
-              
+                    ControlHelper.AddMsg($"开始移动文件到站点[{sitename}]......");
+                    //移动文件
+                    FileCommonHelper.FileMove(roodir, target, null, null, "", true);
+
+                    Thread.Sleep(2000);
+                    StartOrStopWebsite(sitename, true);//开启站点站点 
+                }
+                else if (info.IsIIS.ToInt(1) == 2)//如果是IIS站点
+                {
+                    //关闭进程
+                    BatHelper.Exec($"taskkill /im {info.SiteName}.exe /f");
+                    Thread.Sleep(2000);
+                    //移动文件
+                    FileCommonHelper.FileMove(roodir, target, null, null, "", true);
+
+                    //启动进程
+                    BatHelper.Exec("taskkill /im xxx.exe /f");
+                }
+
+
             }
             catch (Exception ex)
             {

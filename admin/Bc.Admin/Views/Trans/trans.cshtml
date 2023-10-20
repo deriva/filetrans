@@ -34,11 +34,11 @@
                         </td>
                         <td>
                             <button type="button" class="layui-btn layui-btn-sm  layui-btn-radius layui-btn-danger"
-                                    onclick="P.Sysnc(0)">
+                                    onclick="P.Sysnc()">
                                 编译
                             </button>
                             <a href='javascript:void(0)' class="layui-btn layui-btn-sm  layui-btn-radius"
-                            onclick="P.PublicSite();">
+                               onclick="P.PublicSite();">
                                 发布
                             </a>
                         </td>
@@ -47,6 +47,7 @@
                 <table class='layui-table' style="table-layout:fixed;">
                     <thead class='head'>
                         <tr>
+                            <th style="width:10%">操作</th>
                             <th style="width:10%">组</th>
                             <th style="width:90%">指令</th>
                         </tr>
@@ -58,7 +59,14 @@
                 <script type="text/html" id="tpl_lsttable">
                     {{each lst as item }}
                     <tr>
+                         <td>
+                              <a  href='javascript:void(0)'
+                                    onclick="P.Sysnc('{{item.GroupName}}')">
+                                执行
+                            </a>
 
+
+                         </td>
                         <td>{{item.GroupName}}</td>
                         <td style="text-align:left;max-height:300px;">
                           <div class="cmdinfo"> <pre>{{item.Cmd}}</pre></div> </td>
@@ -91,7 +99,7 @@
 
 
 </div>
-<script src="~/js/remoteserver.js?v=23ddd"></script> 
+<script src="~/js/remoteserver.js?v=23ddd"></script>
 <script type="text/javascript">
     var ban = new Ban({
         data: {
@@ -146,19 +154,25 @@
             //涉及到权限的  在此重新渲染
         },
         //开启同步
-        Sysnc: () => {
-            if (ban.$data.CheckGroupName.length == 0) {
-                LP.ToastError("请先选择组");
-                return;
+        Sysnc: (groupName) => {
+            var groupName2 = "";
+            if (groupName && groupName.length > 0) {
+                groupName2 = groupName;
+            } else {
+                if (ban.$data.CheckGroupName.length == 0) {
+                    LP.ToastError("请先选择组");
+                    return;
+                }
+                groupName2 = ban.$data.CheckGroupName;
             }
             var lst2 = ban.$data.Lst;
-            lst2 = lst2.filter(x => x.GroupName == ban.$data.CheckGroupName);
+            lst2 = lst2.filter(x => x.GroupName == groupName2);
 
             layer.confirm('确定执行指令编译发布吗？', {
                 btn: ['确定', '取消']
             }, function () {
                 document.getElementById('messagesList').innerHTML = "";
-                layer.closeAll(); 
+                layer.closeAll();
 
                 layindex = layer.msg('正在编译中......', {
                     icon: 16, time: 0,
@@ -198,7 +212,7 @@
             }
             document.getElementById('messagesList').prepend(msg);
         },
-        PublicSite:()=>{
+        PublicSite: () => {
             remoteserver.PublicSite(ban.$data.Search.PublicNo, ban.$data.Search.Env)
         }
 
