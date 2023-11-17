@@ -101,7 +101,14 @@ namespace Bc.PublishWF.Common
                         continue;
                     }
                     var destpath = newdestdir + fs[i].Replace(newsource, "");
-                    File.Copy(fs[i], destpath, true);
+                    try
+                    {
+                        File.Copy(fs[i], destpath, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogHelper.Error("FileMove=>" +ex.Message.ToStr()+ destpath);
+                    }
                     if (isdelete)
                     {
                         File.Delete(fs[i]);
