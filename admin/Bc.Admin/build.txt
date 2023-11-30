@@ -1,0 +1,10 @@
+﻿	
+E:
+cd E:\project\code\ZTEnergyAllInOneV2\2.soft\EnergyAllInOne\WebHost\EnergyAllInOne.WebHost
+rem 删除文件目录
+rd /s/q E:\publicdir\AllInOneV2_Site 
+
+dotnet publish -c Release -r win-x64 -o E:\publicdir\AllInOneV2_Site\   -f net6.0  --self-contained false
+
+
+del /f /s /q \*.json
