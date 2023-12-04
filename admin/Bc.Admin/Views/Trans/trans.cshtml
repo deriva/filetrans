@@ -230,6 +230,8 @@
                 var msg = r.message;
                 var indd = msg.indexOf("error");
                 if (indd == -1) indd = msg.indexOf("ERROR");
+                if (indd == -1) indd = msg.indexOf("Exception");
+                if (indd == -1) indd = msg.indexOf("exception"); 
                 if (indd > -1) {
                     msg = '<span style="color:red">' + (cmdArr[i].GroupName + "--" + msg.substr(indd)) + "</span>";
                 }
