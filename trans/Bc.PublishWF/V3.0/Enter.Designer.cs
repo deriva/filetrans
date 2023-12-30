@@ -29,49 +29,62 @@ namespace Bc.PublishWF.V3._0
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnLocalServer = new System.Windows.Forms.Button();
-            this.btnSocket = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.本地http服务ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.文件接收器ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btnLocalServer
+            // menuStrip1
             // 
-            this.btnLocalServer.Location = new System.Drawing.Point(55, 40);
-            this.btnLocalServer.Name = "btnLocalServer";
-            this.btnLocalServer.Size = new System.Drawing.Size(154, 51);
-            this.btnLocalServer.TabIndex = 0;
-            this.btnLocalServer.Text = "本地http服务";
-            this.btnLocalServer.UseVisualStyleBackColor = true;
-            this.btnLocalServer.Click += new System.EventHandler(this.btnLocalServer_Click);
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.本地http服务ToolStripMenuItem,
+            this.文件接收器ToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1067, 28);
+            this.menuStrip1.TabIndex = 3;
+            this.menuStrip1.Text = "menuStrip1";
             // 
-            // btnSocket
+            // 本地http服务ToolStripMenuItem
             // 
-            this.btnSocket.Location = new System.Drawing.Point(316, 40);
-            this.btnSocket.Name = "btnSocket";
-            this.btnSocket.Size = new System.Drawing.Size(201, 51);
-            this.btnSocket.TabIndex = 1;
-            this.btnSocket.Text = "文件接收服务";
-            this.btnSocket.UseVisualStyleBackColor = true;
-            this.btnSocket.Click += new System.EventHandler(this.btnSocket_Click);
+            this.本地http服务ToolStripMenuItem.Name = "本地http服务ToolStripMenuItem";
+            this.本地http服务ToolStripMenuItem.Size = new System.Drawing.Size(114, 24);
+            this.本地http服务ToolStripMenuItem.Text = "本地http服务";
+            this.本地http服务ToolStripMenuItem.Click += new System.EventHandler(this.本地http服务ToolStripMenuItem_Click);
+            // 
+            // 文件接收器ToolStripMenuItem
+            // 
+            this.文件接收器ToolStripMenuItem.Name = "文件接收器ToolStripMenuItem";
+            this.文件接收器ToolStripMenuItem.Size = new System.Drawing.Size(98, 24);
+            this.文件接收器ToolStripMenuItem.Text = "文件接收器";
+            this.文件接收器ToolStripMenuItem.Click += new System.EventHandler(this.文件接收器ToolStripMenuItem_Click);
             // 
             // Enter
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.btnSocket);
-            this.Controls.Add(this.btnLocalServer);
+            this.ClientSize = new System.Drawing.Size(1067, 562);
+            this.Controls.Add(this.menuStrip1);
+            this.IsMdiContainer = true;
+            this.MainMenuStrip = this.menuStrip1;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Enter";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Devop服务入口";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Enter_FormClosing);
             this.Load += new System.EventHandler(this.Enter_Load);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnLocalServer;
-        private System.Windows.Forms.Button btnSocket;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem 本地http服务ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 文件接收器ToolStripMenuItem;
     }
 }

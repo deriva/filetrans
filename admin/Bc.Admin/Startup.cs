@@ -1,4 +1,6 @@
-﻿using Bc.Common.Redis;
+﻿using Bc.Bussiness.Extensions;
+using Bc.Common;
+using Bc.Common.Redis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +19,7 @@ namespace Bc.Admin
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            GlobalContext.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -24,9 +27,12 @@ namespace Bc.Admin
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-        
-            services.AddControllersWithViews().AddControllersAsServices();
+
+           // services.AddControllersWithViews().AddControllersAsServices();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddRazorPages().AddRazorRuntimeCompilation();
+            services.AddSignalR();
+            GlobalContext.Services = services;
             services.AddMvc().AddJsonOptions(options =>
             {
 
@@ -46,7 +52,7 @@ namespace Bc.Admin
                 options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
             });
             //注册REDIS 服务
-             RedisServer.Initalize();
+            //RedisServer.Initalize();
         }
         public class DatetimeJsonConverter : JsonConverter<DateTime>
         {
@@ -64,7 +70,7 @@ namespace Bc.Admin
             {
                 writer.WriteStringValue(value.ToString("yyyy-MM-dd HH:mm:ss"));
             }
-            
+
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -81,7 +87,7 @@ namespace Bc.Admin
 
             app.UseRouting();
 
-       //     app.UseAuthorization();
+            //     app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
@@ -93,14 +99,23 @@ namespace Bc.Admin
                     name: "ToolsVN",
                     pattern: "{controller=Home}/{action=vn}/{id?}");
             });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<SignalRHub>("/hub");
+
+
+
+            });
+            GlobalContext.ServiceProvider = app.ApplicationServices;
         }
 
-    
- 
+
+
         #region 注入
-         
+
         #endregion
- 
-   
+
+
     }
 }

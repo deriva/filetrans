@@ -87,5 +87,46 @@ namespace Bc.Model
             /// </summary>
             public T data { get; set; }
         }
-     
+    /// <summary>
+    /// 返回带分页的Model
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class ApiPageResult<T> : ApiResult
+    {
+        /// <summary>
+        /// 分页索引
+        /// </summary>
+        public int Page { get; set; }
+        /// <summary>
+        /// 分页大小
+        /// </summary>
+        public int PageSize { get; set; }
+        /// <summary>
+        /// 总记录数
+        /// </summary>
+        public int TotalCount { get; set; }
+        /// <summary>
+        /// 总页数
+        /// </summary>
+        public int TotalPages { get; set; }
+
+        /// <summary>
+        /// 是否有上一页
+        /// </summary>
+        public bool HasPreviousPage
+        {
+            get { return Page > 0; }
+        }
+        /// <summary>
+        /// 是否有下一页
+        /// </summary>
+        public bool HasNextPage
+        {
+            get { return Page + 1 < TotalPages; }
+        }
+
+        public List<T> Items { get; set; }
+
+        public object TotalField { get; set; }
+    }
 }

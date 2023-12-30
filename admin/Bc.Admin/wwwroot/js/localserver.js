@@ -33,12 +33,14 @@ var ls = {//localserver
         });
     },
     PublicSite: (no, env) => {//发布站点
-        var obj = {
-            no: no,
-            cmd: "publicsite",
-            env: env
-        }
-        ls.Call(obj);
+        layer.confirm("确定发布吗", function () { 
+            var obj = {
+                no: no,
+                cmd: "publicsite",
+                env: env
+            }
+            ls.Call(obj);
+        });
     },
     Call: (data) => {
         if (!isOpenLocalServer) {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Data.Sqlite;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -133,7 +134,7 @@ namespace Bc.PublishWF.Common
         /// </summary>
         /// <param name="cmd">SqlCommand对象</param>
         /// <returns>查询所得的第1行第1列数据</returns>
-        public static object ExecuteScalar(SQLiteCommand cmd, string connectionString)
+        public static object ExecuteScalar(SqliteCommand cmd, string connectionString)
         {
             object result = 0;
             if (connectionString == null || connectionString.Length == 0)

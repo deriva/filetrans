@@ -8,6 +8,7 @@ using Bc.Model.Api;
 using Bc.Model.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MySqlX.XDevAPI.Common;
 using System.Linq;
 
 namespace Bc.Admin.Controllers
@@ -17,10 +18,14 @@ namespace Bc.Admin.Controllers
     {
 
         private readonly ISiteInfoService biz;
+        private readonly IPublicCmdService bizCmd;
+
+
 
         public PublicFileDirController()
         {
             biz = new SiteInfoService();
+            bizCmd = new PublicCmdService();
         }
 
 
@@ -138,7 +143,43 @@ namespace Bc.Admin.Controllers
 
         #endregion
 
- 
+        #region 发布编译指令管理
+        public IActionResult PublicCmd()
+        {
+            return View();
+        }
+     
+        [HttpPost]
+        public ActionResult SavePublicCmd(PublicCmd info)
+        {
+            var msg = "";
+            var lst = bizCmd.Save(info, ref   msg);
+            return toResponse(lst, msg, lst);
+        }
+      
+
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="sitename"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult DeletePublicCmd(int id)
+        {
+            var lst = bizCmd.Delete(id);
+            return toResponse(1, "", lst);
+        }
+        [HttpGet]
+        public ActionResult PublicCmdList(string PublicNo, string groupName="")
+        {
+            var lst = bizCmd.PublicCmdList(PublicNo,   groupName);
+            return toResponse(1, "", new { DataSource = lst, TotalCount = lst.Count });
+        }
+
+         
+        #endregion
+
+
 
     }
 }

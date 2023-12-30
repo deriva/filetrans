@@ -91,7 +91,7 @@
                                     <i class="layui-icon">&#xe642;</i>取消
                                 </a>
                                 <hr style="margin:0" />
-                                <a href='javascript:void(0)' onclick="ls.CreateIIS_Site('{{item.No}}')">
+                                <a href='javascript:void(0)' onclick="remoteserver.CreateIIS_Site('{{item.No}}')">
                                     <i class="layui-icon">&#xe716;</i>
                                     建站点
                                 </a>
@@ -99,13 +99,13 @@
                                     <i class="layui-icon">&#xe716;</i>
                                     虚拟目录
                                 </a>
-                                <a href='javascript:void(0)' onclick="ls.EnabledIIS_Site('{{item.No}}',1)">
+                                <a href='javascript:void(0)' onclick="remoteserver.EnabledIIS_Site('{{item.No}}',1)">
                                     <i class="layui-icon">&#xe652;</i>
                                     启动站点
                                 </a>
-                                <a href='javascript:void(0)' onclick="ls.EnabledIIS_Site('{{item.No}}',2)"> <i class="layui-icon">&#xe651;</i> 停止站点</a>
+                                <a href='javascript:void(0)' onclick="remoteserver.EnabledIIS_Site('{{item.No}}',2)"> <i class="layui-icon">&#xe651;</i> 停止站点</a>
 
-                                <a href='javascript:void(0)' onclick="ls.EnabledIIS_Site('{{item.No}}',3)">
+                                <a href='javascript:void(0)' onclick="remoteserver.EnabledIIS_Site('{{item.No}}',3)">
                                     <i class="layui-icon">&#x1007;</i>
                                     移除站点
                                 </a>
@@ -209,8 +209,8 @@
         </table>
 
     </form>
-</script>
-<script src="~/js/localserver.js"></script>
+</script> 
+<script src="/js/remoteserver.js"></script>
 <script type="text/javascript">
     //全局数据对象
     var ban = new Ban({
