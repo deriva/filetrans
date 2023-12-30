@@ -52,7 +52,13 @@ namespace Bc.Model.Dto
            [Display(Name = "配置编号")]
            public  string ConfigNo 
            {get;set;}
-
+        /// <summary>
+        /// 描述 : 数据库 
+        /// 空值 : False
+        /// 默认 : 
+        /// </summary>
+        [Display(Name = "数据库")]
+        public string DBName { get; set; }
 
     }
 }

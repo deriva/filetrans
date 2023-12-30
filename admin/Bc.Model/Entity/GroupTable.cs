@@ -39,7 +39,7 @@ namespace Bc.Model
            /// 默认 : 
            /// </summary>
            [Display(Name = "组信息")]           
-           [SugarColumn(IsPrimaryKey=true)]
+           [SugarColumn(IsPrimaryKey=true,IsIdentity =true)]
            public int ID {get;set;}
 
            /// <summary>

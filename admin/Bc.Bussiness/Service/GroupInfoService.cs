@@ -22,21 +22,23 @@ namespace Bc.Bussiness.Service
         /// </summary>  
         /// <param name=\"parm\"></param>  
         /// <returns></returns>   \r\n" +
-        public PagedInfo<GroupInfo> QueryPages(GroupInfoDto parm)  
-        {    
-            var expr = Expressionable.Create<GroupInfo>(); 
-        
-            if (parm.ID.ToInt2()>0) expr = expr.And(x => x.ID==parm.ID);
-if (!parm.GroupNo.IsEmpty()) expr = expr.And(x => x.GroupNo.Contains(parm.GroupNo));
-if (!parm.GroupName.IsEmpty()) expr = expr.And(x => x.GroupName.Contains(parm.GroupName));
-if (!parm.UserNo.IsEmpty()) expr = expr.And(x => x.UserNo.Contains(parm.UserNo));
-if (!parm.ConfigNo.IsEmpty()) expr = expr.And(x => x.ConfigNo.Contains(parm.ConfigNo));
+        public PagedInfo<GroupInfo> QueryPages(GroupInfoDto parm)
+        {
+            var expr = Expressionable.Create<GroupInfo>();
 
-            var source = Db.Queryable<GroupInfo>().Where(expr.ToExpression());  
-            parm.OrderBy = "Id";  
-            parm.Sort = "descending";  
-            return source.ToPage(new PageParm { Page = parm.Page, PageSize = parm.PageSize, OrderBy = parm.OrderBy, Sort = parm.Sort }); 
-        }  
+            if (parm.ID.ToInt2() > 0) expr = expr.And(x => x.ID == parm.ID);
+            if (!parm.GroupNo.IsEmpty()) expr = expr.And(x => x.GroupNo.Contains(parm.GroupNo));
+            if (!parm.GroupName.IsEmpty()) expr = expr.And(x => x.GroupName.Contains(parm.GroupName));
+            if (!parm.UserNo.IsEmpty()) expr = expr.And(x => x.UserNo.Contains(parm.UserNo));
+            if (!parm.ConfigNo.IsEmpty()) expr = expr.And(x => x.ConfigNo.Contains(parm.ConfigNo));
+            if (!parm.DBName.IsEmpty()) expr = expr.And(x => x.DBName.Contains(parm.DBName));
+
+
+            var source = Db.Queryable<GroupInfo>().Where(expr.ToExpression());
+            parm.OrderBy = "Id";
+            parm.Sort = "descending";
+            return source.ToPage(new PageParm { Page = parm.Page, PageSize = parm.PageSize, OrderBy = parm.OrderBy, Sort = parm.Sort });
+        }
         #endregion
 
     }

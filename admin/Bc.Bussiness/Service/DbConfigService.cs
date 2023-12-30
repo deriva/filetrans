@@ -80,7 +80,7 @@ namespace Bc.Bussiness.Service
 SELECT a.name, b.rows
 FROM sysobjects AS a INNER JOIN sysindexes AS b ON a.id = b.id
 WHERE (a.type = 'u') AND (b.indid IN (0, 1)) {1}
-ORDER BY b.rows asc", database, where);
+ORDER BY b.rows desc", database, where);
             return DBHelper(config.ConfigInfo).Ado.GetDataTable(sql);
         }
 
@@ -97,7 +97,7 @@ ORDER BY b.rows asc", database, where);
             var where = " 1=1";
             if (!string.IsNullOrWhiteSpace(table))
             {
-                where = string.Format(" d.name='{0}'", table);
+                where = string.Format(" d.name in ({0})", string.Join(",", table.Split(",").Select(x=>"'"+x+"'").ToList()));
             }
             var sql = @"use [{0}];
 

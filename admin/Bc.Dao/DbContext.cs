@@ -42,7 +42,7 @@ namespace Bc.Dao
 
             return new SqlSugarClient(new ConnectionConfig()
             {
-                ConnectionString = AppSettings.Configuration["DbConnection:ConnectionString"],
+                ConnectionString = config,
                 DbType = (DbType)Convert.ToInt32(AppSettings.Configuration["DbConnection:DbType"]),
                 IsAutoCloseConnection = false,
                 IsShardSameThread = true,

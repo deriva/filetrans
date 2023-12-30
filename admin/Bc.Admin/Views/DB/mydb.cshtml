@@ -1,5 +1,9 @@
 ﻿<style type="text/css">
-    .tl{text-align:left!important;}
+    .tl { text-align: left !important; }
+    .layui-table { margin-top: 0px !important }
+    #listtable3 { max-height: 900px; overflow: scroll; }
+    #listtable3 { border: 1px solid rgb(128 128 128 / 0.44); border-radius: 2px; display: flex; padding: 1px; }
+    #listtable3 .card { margin: 5px; overflow-x: scroll; padding: 2px; float: left; height: 30px; line-height: 30px; word-break: break-all; word-wrap: break-word; }
 </style>
 <div class="layuimini-container">
     <div class="layuimini-main">
@@ -11,13 +15,14 @@
         </div>
         <div class="row">
             <div class="layui-row">
-                <div class="layui-col-md1">
+                <div class="layui-col-md2">
                     <div id="listtable2"> </div>
                     <script type="text/html" id="tpl_lsttable2">
                         <table class='layui-table'>
                             <thead class='head'>
                                 <tr>
                                     <th> 数据库</th>
+                                    <th>  </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -25,8 +30,13 @@
                                 {{each lst as item }}
                                 <tr>
                                     <td class="tl">
-                                        <a href="javascript:void(0)" onclick="P.GetTableRow('{{item.name}}','')">
+                                        <a href="javascript:void(0)"  onclick="P.GetTableRow('{{item.name}}','')">
                                             {{item.name}}
+                                        </a>
+                                    </td>
+                                    <td class="tl">
+                                        <a href="javascript:void(0)" onclick="P.DialogJoinGroup('{{item.name}}' );"  >
+                                           关系图
                                         </a>
                                     </td>
                                 </tr>
@@ -38,36 +48,25 @@
                 <div class="layui-col-md3">
                     <div id="listtable3"> </div>
                     <script type="text/html" id="tpl_lsttable3">
-                        <table class='layui-table'>
-                            <thead class='head'>
-                                <tr>
-                                    <th> 表</th>
-                                    <th> 行数</th>
-                                    <th> 操作</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>{{tablecount}}</td><td>{{totalrows}}</td></tr>
-                                {{each lst as item }}
-                            <tr>
-                                <td class="tl">
+                        <ul>
+
+                            <li><span>{{tablecount}}张表</span>，<span>{{totalrows}}行数据</span></li>
+                            {{each lst as item }}
+                            <li class="card">
+                                <span class="tl">
                                     <a href="javascript:void(0)" onclick="P.GetTableInfo('{{item.database}}','{{item.name}}')">
-                                        {{item.name}}
+                                    {{$index}}.{{item.name}}({{item.rows}})
                                     </a>
-                                </td>
-                                <td>{{item.rows}}</td>
-                                <td> 
-                                    <a href='javascript:void(0)' onclick="P.DialogJoinGroup('{{item.database}}','{{item.name}}');">
-                                        <i class="layui-icon">&#xe642;</i>加入组
-                                    </a>
-                                </td>
-                            </tr>
-                                {{/each}}
-                            </tbody>
-                        </table>
+                                </span>
+                               
+                                
+                            </li>
+                            {{/each}}
+                        </ul>
+
                     </script>
                 </div>
-                <div class="layui-col-md8">
+                <div class="layui-col-md5">
                     <!--列表页-->
                     <div id="listtable4"> </div>
                     <script type="text/html" id="tpl_lsttable4">
@@ -81,7 +80,7 @@
 
                                     <th> 列长度</th>
                                     <th> 是否主键</th>
-                                    <th> 是否自增</th> 
+                                    <th> 是否自增</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -97,7 +96,7 @@
                                     <td>{{item.Len}}</td>
                                     <td>{{item.PrimaryKey}}</td>
                                     <td>{{item.Identity}}</td>
-                                   
+
 
                                 </tr>
 
@@ -153,7 +152,7 @@
             http.get(url).then(r => {
                 var Lst = []; var totalrows = 0;
                 JSON.parse(r.attr).forEach(x => {
-                    totalrows += parseInt( x.rows);
+                    totalrows += parseInt(x.rows);
                     Lst.push({ name: x.name, rows: x.rows, database: database })
                 });
                 LP.TmplReader({ lst: Lst, tablecount: Lst.length, totalrows: totalrows }, "tpl_lsttable3", "listtable3")
@@ -164,9 +163,14 @@
             url += "&database=" + database;
             url += "&table=" + tablename;
             http.get(url).then(r => {
-                var Lst = r.attr; 
+                var Lst = r.attr;
                 LP.TmplReader({ lst: Lst }, "tpl_lsttable4", "listtable4")
             });
+        },
+        DialogJoinGroup: (database) => { 
+            var rul = "/DB/group?configno=" + LP.GetQueryString("configno");
+            rul += "&database=" + database;
+            window.open(rul, "_blank")
         },
         DialogEdit: (i) => {
             var data = ban.$data.Edit;

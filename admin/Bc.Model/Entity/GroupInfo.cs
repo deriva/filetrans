@@ -21,50 +21,58 @@ namespace Bc.Model
     [SugarTable("GroupInfo")]
     public class GroupInfo
     {
-          public GroupInfo()
-          {
-          }
+        public GroupInfo()
+        {
+        }
 
-           /// <summary>
-           /// 描述 : 组信息 
-           /// 空值 : False
-           /// 默认 : 
-           /// </summary>
-           [Display(Name = "组信息")]           
-           [SugarColumn(IsPrimaryKey=true,IsIdentity=true)]
-           public int ID {get;set;}
+        /// <summary>
+        /// 描述 : 组信息 
+        /// 空值 : False
+        /// 默认 : 
+        /// </summary>
+        [Display(Name = "组信息")]
+        [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
+        public int ID { get; set; }
 
-           /// <summary>
-           /// 描述 : 组编号 
-           /// 空值 : False
-           /// 默认 : 
-           /// </summary>
-           [Display(Name = "组编号")]           
-           public string GroupNo {get;set;}
+        /// <summary>
+        /// 描述 : 组编号 
+        /// 空值 : False
+        /// 默认 : 
+        /// </summary>
+        [Display(Name = "组编号")]
+        public string GroupNo { get; set; }
 
-           /// <summary>
-           /// 描述 : 组名 
-           /// 空值 : False
-           /// 默认 : 
-           /// </summary>
-           [Display(Name = "组名")]           
-           public string GroupName {get;set;}
+        /// <summary>
+        /// 描述 : 组名 
+        /// 空值 : False
+        /// 默认 : 
+        /// </summary>
+        [Display(Name = "组名")]
+        public string GroupName { get; set; }
 
-           /// <summary>
-           /// 描述 : 用户 
-           /// 空值 : False
-           /// 默认 : 
-           /// </summary>
-           [Display(Name = "用户")]           
-           public string UserNo {get;set;}
+        /// <summary>
+        /// 描述 : 用户 
+        /// 空值 : False
+        /// 默认 : 
+        /// </summary>
+        [Display(Name = "用户")]
+        public string UserNo { get; set; }
 
-           /// <summary>
-           /// 描述 : 配置编号 
-           /// 空值 : False
-           /// 默认 : 
-           /// </summary>
-           [Display(Name = "配置编号")]           
-           public string ConfigNo {get;set;}
+        /// <summary>
+        /// 描述 : 配置编号 
+        /// 空值 : False
+        /// 默认 : 
+        /// </summary>
+        [Display(Name = "配置编号")]
+        public string ConfigNo { get; set; }
 
+
+        /// <summary>
+        /// 描述 : 数据库 
+        /// 空值 : False
+        /// 默认 : 
+        /// </summary>
+        [Display(Name = "数据库")]
+        public string DBName { get; set; }
     }
 }

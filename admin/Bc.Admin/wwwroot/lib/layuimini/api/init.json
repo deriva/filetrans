@@ -67,21 +67,9 @@
           "target": "_self",
           "child": [
             {
-              "title": "配置管理",
+              "title": "实例管理",
               "href": "/DB/config",
               "icon": "fa fa-stumbleupon-circle",
-              "target": "_self"
-            },
-            {
-              "title": "数据库管理",
-              "href": "/DB/mydb",
-              "icon": "fa fa-viacoin",
-              "target": "_self"
-            },
-            {
-              "title": "分组管理",
-              "href": "/db/group",
-              "icon": "fa fa-viacoin",
               "target": "_self"
             }  
           ]

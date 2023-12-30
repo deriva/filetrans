@@ -62,9 +62,15 @@
                                 <a href='javascript:void(0)' onclick="P.DialogEdit({{$index}})">
                                     <i class="layui-icon">&#xe642;</i>编辑
                                 </a>
-                                <a href='javascript:void(0)' onclick="LP.Cancel({{$index}});">
+                                <a href='javascript:void(0)' onclick="BJPL.Cancel({{$index}});">
                                     <i class="layui-icon">&#xe642;</i>删除
                                 </a>
+
+
+                                <a href='javascript:void(0)' onclick="P.OpenDB({{ $index }});">
+                                    <i class="layui-icon">&#xe642;</i>数据库
+                                </a>
+
                             </td>
 
                         </tr>
@@ -134,7 +140,7 @@
             LstStatus: [{ key: "1", val: "启用" }, { key: "0", val: "禁用" }],
             SearchUrl: '/db/GetList',
             EditSaveUrl: '/db/SaveConfig',
-            CancelUrl: '',
+            CancelUrl: '/db/CancelConfig',
         }
     });
     var P = {
@@ -148,6 +154,11 @@
                 if (obj3) x.StatusName = obj3.val;
 
             });
+        },
+        OpenDB: (i) => {
+            var data = ban.$data.Lst[i];
+            var rul = "/DB/mydb?configno=" + data.ConfigNo;
+            window.open(rul,"_blank")
         },
         DialogEdit: (i) => {
             var data = ban.$data.Edit;

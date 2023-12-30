@@ -1,148 +1,87 @@
-﻿
-@{
-    ViewData["Title"] = "发布站点到服务器";
-}
+﻿<style type="text/css">
+    .tl { text-align: left !important; }
+    .on { background-color: #1E9FFF;color:#fff; }
+    .on a{  color: #fff; }
+    #listtable3 { border: 1px solid rgb(128 128 128 / 0.44); border-radius: 2px; display: flex; padding: 1px; }
+    #listtable3 .card { overflow-x: scroll; margin: 2px; padding: 2px; height: 30px; line-height: 30px; word-break: break-all; word-wrap: break-word; }
+    #listtable4 .card { overflow-x: scroll; float: left; margin: 2px; padding: 2px; word-break: break-all; word-wrap: break-word; }
+    .layui-table { margin-top: 0px !important }
+    #listtable3 { max-height: 900px; overflow: scroll; }
+    .ul3 li { float: left; margin: 5px; font-size: 16px; font-weight: bolder; padding: 2px 5px; border: 1px solid rgb(128 128 128 / 0.31); height: 30px; line-height: 30px; }
+    .tabcard h2 { background-color:rgb(255 0 0);color:#ffffff;text-align:center}
 
-
+    .tabcard { max-height: 500px; overflow: scroll; max-width: 500px; }
+    #listtable4 { column-count: 5; column-gap: 10px; }
+</style>
 <div class="layuimini-container">
     <div class="layuimini-main">
-        <div class="layui-row">
-            <div class="layui-col-md6">
-
-                <div>
-                    <form class="layui-form layui-form-pane" action="" id="fm">
-                        <div class="layui-form-item">
-                            <div class='layui-inline'>
-                                <label class='layui-form-label'>服务端名称</label>
-                                <div class='layui-input-inline'>
-                                    <input type='text' value='' bf-model='Search.SiteName' name='SiteName' class='layui-input' />
-                                </div>
-                            </div>
-                            <div class='layui-inline'>
-                                <label class='layui-form-label'>环境</label>
-                                <div class='layui-input-inline'>
-                                    <select class="layui-input" name="Env" lay-ignore bf-model='Search.Env' defval="{{Env}}">
-                                        <option value="">请选择</option>
-                                        <option value="1">生产</option>
-                                        <option value="2">测试</option>
-                                        <option value="3">预发</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="layui-inline">
-                                <button type="button" class="layui-btn layui-btn-primary"
-                                        onclick="P.SearchData(0)">
-                                    <i class="layui-icon"></i> 搜 索
-                                </button>
-                            </div>
+        <div>
+            <form class="layui-form layui-form-pane" action="" id="fm">
+                <div class="layui-form-item">
+                    <div class='layui-inline'>
+                        <label class='layui-form-label'>组名称</label>
+                        <div class='layui-input-inline'>
+                            <input type='text' value='' bf-model='GroupInfo.GroupName' class='layui-input' />
                         </div>
-                    </form>
+                    </div>
+
+                    <div class="layui-inline">
+                        <button type="button" class="layui-btn layui-btn-primary"
+                                onclick="P.SaveGroupInfo(0)">
+                            <i class="layui-icon"></i> 保存
+                        </button>
+
+                        <button type="button" class="layui-btn layui-btn-primary"
+                                onclick="P.DialogDataRow(0)">
+                            <i class="layui-icon"></i> 添加关系表
+                        </button>
+                    </div>
                 </div>
+            </form>
+            <hr />
+        </div>
+        <div class="dataroww" style="display:none;">
+            <div id="listtable3"> </div>
+            <script type="text/html" id="tpl_lsttable3">
+                <ul class="ul3">
+                    <li>(<span>{{totalrows}}行数据</span>)<span>表:{{tablecount}}</span> </li>
 
+                    {{each lst as item }}
+                    <li class="card" style="">
 
+                        <span>
+                            <a href="javascript:void(0)" ondblclick="P.JoinGroup('{{item.name}}')">
+                                {{$index}}.{{item.name}}  (<span>{{item.rows}}</span>)
+                            </a>
+                        </span>
 
-                <div class="row">
-                    <!--列表页-->
-                    <div id="listtable"> </div>
-                    <script type="text/html" id="tpl_lsttable">
-                        <table class='layui-table'>
-                            <thead class='head'>
-                                <tr>
-                                    <th>站点名称</th>
-                                    <th>端口</th>
-                                    <th>服务器</th>
-                                    <th>编号</th>
-                                    <th>
-                                        环境
-                                        <br />
-                                        1生产 2测试
-                                    </th>
-                                    <th>操作</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                    </li>
+                    {{/each}}
+                </ul>
+            </script>
+        </div>
 
-                                {{each lst as item }}
-                                <tr>
-                                    <td>{{item.SiteName}}</td>
-                                    <td>{{item.Port}}</td>
-                                    <td>{{item.ServerIP}}</td>
-                                    <td>{{item.No}}</td>
-                                    <td>{{item.EnvName}}</td>
-                                    <td>
-                                        <a href='javascript:void(0)' onclick="P.AddBind({{$index}})">
-                                            <i class="layui-icon">&#xe642;</i>添加
-                                        </a>
-                                    </td>
-                                </tr>
-                                {{/each}}
-                            </tbody>
-                        </table>
-                    </script>
-                    <div class='pagezone' id='pagezone'></div>
-                </div>
+        <div class="layui-btn-container">
 
-            </div>
-
-            <div class="layui-col-md6">
-
-                <div>
-                    <form class="layui-form layui-form-pane" action="" id="fm">
-                        <div class="layui-form-item">
-                            <div class='layui-inline'>
-                                <label class='layui-form-label'>发布站点编号</label>
-                                <div class='layui-input-inline'>
-                                    <input type='text' readonly="readonly" value=''  bf-model='Search2.PublicNo' name='PublicNo' class='layui-input' />
-                                </div>
-                            </div>
-                            <div class='layui-inline'>
-                                <label class='layui-form-label'>发布名称</label>
-                                <div class='layui-input-inline'>
-                                    <input type='text' value='' readonly="readonly"  bf-model='Search2.PublicSiteName' name='PublicSiteName' class='layui-input' />
-                                </div>
-                            </div>
-
-                            <div class="layui-inline">
-                                <button type="button" class="layui-btn layui-btn-primary"
-                                        onclick="P.SearchData2(0)">
-                                    <i class="layui-icon"></i> 搜 索
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-
-
-                <div class="row">
-                    <!--列表页-->
+        </div>
+        <div class="row">
+            <div class="layui-row">
+                <div class="layui-col-md1">
                     <div id="listtable2"> </div>
                     <script type="text/html" id="tpl_lsttable2">
                         <table class='layui-table'>
                             <thead class='head'>
                                 <tr>
-                                    <th>服务站点编号</th>
-                                    <th>服务端站点名称</th>
-                                    <th>发布站点编号</th>
-                                    <th>发布站点名称</th>
-
-
-                                    <th>操作</th>
+                                    <th> 关系图</th>
                                 </tr>
                             </thead>
                             <tbody>
 
                                 {{each lst as item }}
-                                <tr>
-                                    <td>{{item.ServerNo}}</td>
-                                    <td>{{item.ServerSiteName}}</td>
-                                    <td>{{item.PublicNo}}</td>
-                                    <td>{{item.PublicSiteName}}</td>
-
-                                    <td>
-                                        <a href='javascript:void(0)' onclick="P.Cancel({{$index}})">
-                                            <i class="layui-icon">&#xe642;</i>移除
+                                <tr class="{{item.chkon}}">
+                                    <td class="tl">
+                                        <a href="javascript:void(0)" onclick="P.CheckGroupInfo('{{item.ID}}')">
+                                            {{item.GroupName}}
                                         </a>
                                     </td>
                                 </tr>
@@ -150,14 +89,61 @@
                             </tbody>
                         </table>
                     </script>
-                    <div class='pagezone' id='pagezone2'></div>
                 </div>
 
+                <div class="layui-col-md11">
+                    <!--列表页-->
+                    <div id="listtable4"> </div>
+                    <script type="text/html" id="tpl_lsttable4">
+                        <ul>
+                            {{each lst as sub }}
+                            <li class="card tabcard">
+                                <h2 ondblclick="P.RemoveGroup('{{sub.tablename}}')">表{{sub.tablename}}</h2>
+                                <table class='layui-table '>
+                                    <thead class='head'>
+                                        <tr>
 
+                                            <th> 列名</th>
+                                            <th> 描述</th>
+                                            <th> 类型</th>
+
+                                            <th> 列长度</th>
+                                            <th> 是否主键</th>
+                                            <th> 是否自增</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        {{each sub.lst as item }}
+                                        <tr>
+
+
+                                            <td class="tl">{{item.Column}}</td>
+                                            <td>{{item.ColumnDesc}}</td>
+
+                                            <td>{{item.Type}}</td>
+                                            <td>{{item.Len}}</td>
+                                            <td>{{item.PrimaryKey}}</td>
+                                            <td>{{item.Identity}}</td>
+
+
+                                        </tr>
+
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </li>
+                            {{/each}}
+                        </ul>
+
+
+
+                    </script>
+                    <div class='pagezone' id='pagezone'></div>
+                </div>
             </div>
+
         </div>
-
-
     </div>
 </div>
 
@@ -166,129 +152,169 @@
     var ban = new Ban({
         data: {
             Search: {
-                Id: 0, Env:"",
-                SiteName: LP.GetQueryString("PublicSiteName"),
+                configno: LP.GetQueryString("configno"),
+                DBName: LP.GetQueryString("database"),
                 PageSize: 20,
                 Page: 1
             }, //搜索条件
-            Search2: {
-                Id: 0,
-                PublicNo: LP.GetQueryString("PublicNo"),
-                PublicSiteName: LP.GetQueryString("PublicSiteName"),
-                PageSize: 20,
-                Page: 1
-            }, //搜索条件
+            GroupInfo: {
+                GroupName: "", GroupNo: "", ID: "0", UserNo: "", ConfigNo: LP.GetQueryString("configno"), DBName: LP.GetQueryString("database")
+            },
+            LstGroupInfo: [],
             Lst: [], //列表集合,
-            Lst2: [], //列表集合,
-            LstEnv: [{ key: "1", val: "生产" }, { key: "2", val: "测试" }, { key: "3", val: "预发" }],
-            SearchUrl: '/Site/GetSiteInfoList',
-            SearchUrl2: '/PublicFileDir/GetPublicToSiteList',
-            EditSaveUrl: '/PublicFileDir/SavePublicToSite',
-            CancelUrl: '/PublicFileDir/DeletePublicToSite',
+            searchcb: "P.HandData",
+            LstFileType: [{ key: "1", val: "文件" }, { key: "0", val: "目录" }],
+            LstStatus: [{ key: "1", val: "启用" }, { key: "0", val: "禁用" }],
+            SearchUrl: ' ',
+            EditSaveUrl: '/db/SaveConfig',
+            CancelUrl: '',
         }
     });
     var P = {
-        SearchData: (changepage) => { //初始化搜索数据
-            layer.closeAll();
-            http.get(ban.$data.SearchUrl + "?" + LP.ParseParams(ban.$data.Search), "").then(r => {
-                layer.closeAll();
-                if (r.code == 100) {
-                    var lst = r.attr.DataSource;
-                    lst.forEach(x => {
-                        var obj = ban.$data.LstEnv.find(y => y.key == x.Env);
-                        if (obj) x.EnvName = obj.val;
-                    });
-                    
+        HandData: (r) => {
 
-                    ban.$data.Lst =lst ;
-                    P.ReaderData("tpl_lsttable", "listtable", ban.$data.Lst);
-                    if (changepage == 0) {
-                        layui.use('laypage', function () {
-                            var laypage = layui.laypage;
-                            laypage.render({
-                                elem: 'pagezone', //分页容器的id
-                                count: r.attr.TotalCount, //数据总数
-                                limit: ban.$data.Search.PageSize, //每页显示的数据条数
-                                skin: '#1E9FFF', //自定义选中色值
-                                layout: ['page', 'count'],
-                                jump: function (obj, first) {
-                                    if (!first) {
-                                        ban.$data.Search.Page = obj.curr;
-                                        P.SearchData(1);
-                                        layer.msg('第' + obj.curr + '页', {
-                                            offset: 'b'
-                                        });
-                                    }
-                                }
-                            });
-                        });
-                    }
-                } else {
-                    ban.$data.Lst = [];
-                    P.ReaderData("tpl_lsttable", "listtable", ban.$data.Lst);
-                }
-            });
-        },
-        //渲染列表数据
-        ReaderData: (id, id2, lst) => {
-            var html = template(id, {
-                lst: lst
-            });
-            document.querySelector('#' + id2).innerHTML = html;
-            //涉及到权限的  在此重新渲染
-        },
-        SearchData2: (changepage) => { //初始化搜索数据
-            layer.closeAll();
-            http.get(ban.$data.SearchUrl2 + "?" + LP.ParseParams(ban.$data.Search2), "").then(r => {
-                layer.closeAll();
-                if (r.code == 100) {
-                    ban.$data.Lst2 = r.attr;
-                    P.ReaderData("tpl_lsttable2", "listtable2", ban.$data.Lst2);
 
-                } else {
-                    LP.ToastError(r.message + "：暂无数据");
-                }
+        },
+        //保存组信息
+        SaveGroupInfo: () => {
+            var url = "/db/SaveGroupInfo";
+            if (ban.$data.GroupInfo.GroupName.length == 0) {
+                layer.msg("请先输入组名"); return false;
+            }
+            http.post(url, ban.$data.GroupInfo).then(r => {
+                P.GetGroupInfo();
             });
         },
-        AddBind: (i) => {//添加绑定
+        CheckGroupInfo: (id) => {
             var info = {};
-            var sub = ban.$data.Lst[i];
-            info.PublicNo = ban.$data.Search2.PublicNo;
-            info.PublicSiteName = ban.$data.Search2.PublicSiteName;
-            info.ServerNo = sub.No;
-            info.ServerSiteName = sub.SiteName;
-            http.post(ban.$data.EditSaveUrl, info).then(r => {
-                if (r.code == 100) {
-                    P.SearchData2(0)
-                } else {
-                    var layindex = layer.alert(r.message, function () {
-                        layer.close(layindex);
-                    });
+            ban.$data.LstGroupInfo.forEach(x => {
+                x.chkon = "";
+                if (x.ID == id) {
+                    x.chkon = "on";
+                    info = x;
                 }
             });
-
+            P.ReaderTableInfo();
+            P.GetGroupTables(info.GroupNo);
         },
-        Cancel: (i) => {
-            http.post(ban.$data.CancelUrl, ban.$data.Lst2[i]).then(r => {
-                if (r.code == 100) {
-                    P.SearchData2(0)
-                } else {
-                    var layindex = layer.alert(r.message, function () {
-                        layer.close(layindex);
-                    });
-                }
+        ReaderTableInfo: () => {
+            LP.TmplReader({ lst: ban.$data.LstGroupInfo }, "tpl_lsttable2", "listtable2")
+        },
+        GetGroupInfo: () => {
+            var url = "/db/GroupInfoList?page=1&pagesize=10000&configno=" + LP.GetQueryString("configno");
+            url += "&DBName=" + LP.GetQueryString("database");
+            http.get(url).then(r => {
+                ban.$data.LstGroupInfo = [];
+                r.attr.DataSource.forEach(x => {
+                    debugger;
+                    x.chkon = "";
+                    ban.$data.LstGroupInfo.push(x);
+                });
+                P.ReaderTableInfo()
             });
+        },
+        GetTableRow: (database, tablename) => {
+            var url = "/db/GetTableRows?configno=" + LP.GetQueryString("configno");
+            url += "&database=" + database;
+            url += "&tablename=" + tablename;
 
+            http.get(url).then(r => {
+                var Lst = []; var totalrows = 0;
+                JSON.parse(r.attr).forEach(x => {
+                    totalrows += parseInt(x.rows);
+                    Lst.push({ name: x.name, rows: x.rows, database: database })
+                });
+                LP.TmplReader({ lst: Lst, tablecount: Lst.length, totalrows: totalrows }, "tpl_lsttable3", "listtable3")
+            });
+        },
+        JoinGroup: (name) => {
+            var url = "/db/SaveGroupTable";
+
+            var info = ban.$data.LstGroupInfo.find(x => x.chkon == "on");
+            if (info) {
+                info.ID = 0;
+                info.TableName = name;
+                http.post(url, info).then(r => {
+                    P.GetGroupTables(info.GroupNo);
+                });
+            } else {
+                layer.msg("请先选择组"); return false; 
+            }
+        },
+        RemoveGroup: (name) => {
+            var url = "/db/RemoveGroupTable";
+
+            var info = ban.$data.LstGroupInfo.find(x => x.chkon == "on");
+            if (info) { 
+                info.TableName = name;
+                http.post(url, info).then(r => {
+                    P.GetGroupTables(info.GroupNo);
+                });
+            } else {
+                layer.msg("请先选择组"); return false;
+            }
+        },
+        GetGroupTables: (groupno) => {
+            var url = "/db/GroupTableList?configno=" + LP.GetQueryString("configno");
+            url += "&DBName=" + ban.$data.Search.DBName;
+            url += "&GroupNo=" + groupno;
+
+            http.get(url).then(r => {
+                var Lst = [];
+                r.attr.DataSource.forEach(x => {
+                    x.chkon = "";
+                    Lst.push(x.TableName);
+                });
+                P.GetTableColumn(ban.$data.Search.DBName, Lst);
+            });
+        },
+        GetTableColumn: (database, tablenames) => {
+            if (tablenames.length == 0) {
+                LP.TmplReader({ lst: [] }, "tpl_lsttable4", "listtable4");
+                return; 
+            }
+            var url = "/db/GetTableColumn?configno=" + LP.GetQueryString("configno");
+            url += "&database=" + database;
+            url += "&table=" + tablenames.toString();
+            http.get(url).then(r => {
+                var Lst = r.attr;
+                var arr = [];
+                tablenames.forEach(x => {
+                    var y = {};
+                    y.tablename = x;
+                    y.lst = [];
+                    Lst.forEach(z => {
+                        if (z.TableName == x) {
+                            y.lst.push(z);
+                        }
+                    });
+                    arr.push(y);
+                });
+
+                LP.TmplReader({ lst: arr }, "tpl_lsttable4", "listtable4");
+              
+            });
+        },
+        DialogDataRow: () => {
+            var info = ban.$data.LstGroupInfo.find(x => x.chkon == "on");
+            if (info) {
+                var title = "关系组:" + info.GroupName;
+                LP.DialogRb($("#listtable3").html(), 0, window.innerHeight * 0.7, title, 3, "auto");
+
+            } else {
+                layer.msg("请先选择组"); return false;
+
+            }
+        },
+        Init: () => {
+            P.GetGroupInfo();
+            P.GetTableRow(ban.$data.Search.DBName, "");
         }
-
     }
 
     $(() => {
-        P.SearchData(0);
-        P.SearchData2(0) 
-    });
+        P.Init();
+    })
 </script>
-
-
-
+<script type="text/javascript" src="/js/bj-pagelist.js"></script>
 
