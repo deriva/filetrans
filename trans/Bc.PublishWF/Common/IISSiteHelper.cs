@@ -63,7 +63,7 @@ namespace Bc.PublishWF.Common
                 Task.Factory.StartNew(() =>
                 {
                     var r = 0;
-                    using (var sm = new ServerManager())
+                    using (var sm = new ServerManager(@"C:\Windows\System32\inetsrv\config\applicationHost.config"))
                     {
                         //创建应用程序池
                         var appPool = sm.ApplicationPools.FirstOrDefault(ap => ap.Name.Equals(poolname));
@@ -111,6 +111,7 @@ namespace Bc.PublishWF.Common
                         }
                         else
                         {
+                            LogHelper.Info($"{string.Join(",", sm.Sites.Select(x => x.Name).ToList())}");
                             ControlHelper.AddMsg($"站点:{sitename}不存在");
                         }
 
