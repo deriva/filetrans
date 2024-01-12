@@ -28,7 +28,7 @@ namespace Bc.Dao
                     InitKeyType = InitKeyType.Attribute,
                     ConfigureExternalServices = new ConfigureExternalServices()
                     {
-                     //   DataInfoCacheService = new RedisCache()
+                        //   DataInfoCacheService = new RedisCache()
                     },
                     MoreSettings = new ConnMoreSettings()
                     {
@@ -37,7 +37,27 @@ namespace Bc.Dao
                 });
             }
         }
+        public static SqlSugarClient DBHelper(string config)
+        {
 
+            return new SqlSugarClient(new ConnectionConfig()
+            {
+                ConnectionString = config,
+                DbType = (DbType)Convert.ToInt32(AppSettings.Configuration["DbConnection:DbType"]),
+                IsAutoCloseConnection = false,
+                IsShardSameThread = true,
+                InitKeyType = InitKeyType.Attribute,
+                ConfigureExternalServices = new ConfigureExternalServices()
+                {
+                    //   DataInfoCacheService = new RedisCache()
+                },
+                MoreSettings = new ConnMoreSettings()
+                {
+                    IsAutoRemoveDataCache = true
+                }
+            });
+
+        }
         public DbContext()
         {
             Db = new SqlSugarClient(new ConnectionConfig()
@@ -49,7 +69,7 @@ namespace Bc.Dao
                 InitKeyType = InitKeyType.Attribute,
                 ConfigureExternalServices = new ConfigureExternalServices()
                 {
-                 //   DataInfoCacheService = new RedisCache()
+                    //   DataInfoCacheService = new RedisCache()
                 },
                 MoreSettings = new ConnMoreSettings()
                 {
@@ -69,7 +89,7 @@ namespace Bc.Dao
         }
 
         public DbSet<sysdiagrams> sysdiagramsDb => new DbSet<sysdiagrams>(Db);
-     
+
 
     }
 

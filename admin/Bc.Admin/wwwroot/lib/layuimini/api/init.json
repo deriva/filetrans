@@ -15,7 +15,7 @@
       "href": "",
       "target": "_self",
       "child": [
-        
+
         {
           "title": "站点信息",
           "href": "",
@@ -58,6 +58,20 @@
               "icon": "fa fa-viacoin",
               "target": "_self"
             }
+          ]
+        },
+        {
+          "title": "DB管理",
+          "href": "",
+          "icon": "fa fa-flag-o",
+          "target": "_self",
+          "child": [
+            {
+              "title": "实例管理",
+              "href": "/DB/config",
+              "icon": "fa fa-stumbleupon-circle",
+              "target": "_self"
+            }  
           ]
         }
 

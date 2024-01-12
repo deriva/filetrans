@@ -1,0 +1,195 @@
+﻿
+<div class="layuimini-container">
+    <div class="layuimini-main">
+      
+            <div>
+                <form class="layui-form layui-form-pane" action="" id="fm"   onsubmit="return false">
+                    <div class="layui-form-item">
+                        <div class='layui-inline'>
+                            <label class='layui-form-label'>站点名称</label>
+                            <div class='layui-input-inline'>
+                                <input type='text' value='' bf-model='Search.SiteName' name='SiteName' class='layui-input' />
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <button type="button" class="layui-btn layui-btn-primary"
+                                    onclick="BJPL.SearchData(0)">
+                                <i class="layui-icon"></i> 搜 索
+                            </button>
+                            <button class="layui-btn layui-btn-normal" onclick="P.DialogEdit(-1)"
+                                    op-id="Operate_Edit">
+                                <i class="layui-icon">&#xe608;</i> 添加
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+ 
+
+        <div class="layui-btn-container">
+            
+        </div>
+        <div class="row">
+            <!--列表页-->
+            <div id="listtable"> </div>
+            <script type="text/html" id="tpl_lsttable">
+                <table class='layui-table'>
+                    <thead class='head'>
+                        <tr>
+
+                            <th>ID</th>
+                            <th> 编号</th>
+                            <th> 名称</th> 
+                            <th>配置信息</th> 
+                             
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {{each lst as item }}
+                        <tr>
+                            <td>{{item.ID}}</td>
+                            <td>{{item.ConfigNo}}</td>
+                            <td>{{item.ConfigName}}</td> 
+                            <td style="text-align:left">{{item.ConfigInfo}}</td> 
+                           
+                            <td>
+
+                                @*<a href='javascript:void(0)' onclick="LP.DialogRb('/PublicFileDir/exlcludedir?PublicNo={{item.PublicNo}}', 0, 0, '', 2);"> <i class="layui-icon">&#xe651;</i> 排除目录</a>*@
+
+                                <a href='javascript:void(0)' onclick="P.DialogEdit({{$index}})">
+                                    <i class="layui-icon">&#xe642;</i>编辑
+                                </a>
+                                <a href='javascript:void(0)' onclick="BJPL.Cancel({{$index}});">
+                                    <i class="layui-icon">&#xe642;</i>删除
+                                </a>
+
+
+                                <a href='javascript:void(0)' onclick="P.OpenDB({{ $index }});">
+                                    <i class="layui-icon">&#xe642;</i>数据库
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {{/each}}
+                    </tbody>
+                </table>
+            </script>
+            <div class='pagezone' id='pagezone'></div>
+        </div>
+    </div>
+</div>
+<!--编辑页页-->
+<script type="text/html" id="tpl_edit">
+    <form id="fmedit">
+        <table class='layui-table'>
+            <tr>
+                <th>参数</th>
+                <td>{{ID}}-{{ConfigNo}}</td>
+            </tr>
+
+            <tr>
+                <th>名称</th>
+
+                <td>
+                    <input type='text' value='{{ConfigName}}' name='SiteName' class='layui-input' />
+                </td>
+            </tr>
+
+            <tr>
+                <th>配置信息</th>
+                <td>
+                    <input type='text' value='{{ConfigInfo}}' name='Path' class='layui-input' />
+                    <input type='hidden' value='{{UserNo}}' name='UserNo' class='layui-input' />
+                    <input type='hidden' value='{{ConfigNo}}' name='ConfigNo' class='layui-input' />
+
+                </td>
+               
+            </tr>
+            
+
+
+            <tr>
+                <th></th>
+                <td colspan="5">
+
+                    <input type='hidden' value='{{Id}}' class='layui-input' name='Id' /> 
+                </td>
+            </tr>
+        </table>
+         
+    </form>
+</script>
+
+<script type="text/javascript">
+    //全局数据对象
+    var ban = new Ban({
+        data: {
+            Search: {
+                SiteName: '',
+                PageSize: 20,
+                Page: 1
+            }, //搜索条件
+            Lst: [], //列表集合,
+            searchcb: "P.HandData",
+            LstFileType: [{ key: "1", val: "文件" }, { key: "0", val: "目录" }],
+            LstStatus: [{ key: "1", val: "启用" }, { key: "0", val: "禁用" }],
+            SearchUrl: '/db/GetList',
+            EditSaveUrl: '/db/SaveConfig',
+            CancelUrl: '/db/CancelConfig',
+        }
+    });
+    var P = {
+        HandData: (r) => {
+            ban.$data.Lst.forEach(x => {
+                x.primarykey = x.ID;
+                var obj = ban.$data.LstFileType.find(y => y.key == x.FileType);
+                if (obj) x.FileTypeName = obj.val;
+              
+                var obj3 = ban.$data.LstStatus.find(y => y.key == x.Status);
+                if (obj3) x.StatusName = obj3.val;
+
+            });
+        },
+        OpenDB: (i) => {
+            var data = ban.$data.Lst[i];
+            var rul = "/DB/mydb?configno=" + data.ConfigNo;
+            window.open(rul,"_blank")
+        },
+        DialogEdit: (i) => {
+            var data = ban.$data.Edit;
+            if (i >= 0) {
+                data = ban.$data.Lst[i];
+                data.ReadOnly = "readonly=readonly";
+            }
+            else {
+                data = {};
+                data.Id = 0; data.Status = 1;
+            }
+            var html = template('tpl_edit', data);
+            LP.DialogHtml({
+                html: html, h: 450, w: 700,
+                title: " 新增或修改",
+                cb: function () {
+                    var data = $("#fmedit").serializeJson();
+                    data.FileType = 1;
+                    data.CompressName = "-";
+                    LP.CommonAjax(ban.$data.EditSaveUrl, data, "确认操作吗?", function (r) {
+                        if (r.code == 100) {
+                            BJPL.SearchData(0);
+                        } else {
+                            top.LP.ToastError(r.message);
+                        }
+                    });
+                }
+            });
+            LP.InitDefval();
+        },
+    }
+</script>
+<script type="text/javascript" src="/js/bj-pagelist.js"></script>
+

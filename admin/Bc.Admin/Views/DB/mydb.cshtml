@@ -1,0 +1,215 @@
+﻿<style type="text/css">
+    .tl { text-align: left !important; }
+    .layui-table { margin-top: 0px !important }
+    #listtable3 { max-height: 900px; overflow: scroll; }
+    #listtable3 { border: 1px solid rgb(128 128 128 / 0.44); border-radius: 2px; display: flex; padding: 1px; }
+    #listtable3 .card { margin: 5px; overflow-x: scroll; padding: 2px; float: left; height: 30px; line-height: 30px; word-break: break-all; word-wrap: break-word; }
+</style>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+
+
+        <div class="layui-btn-container">
+
+        </div>
+        <div class="row">
+            <div class="layui-row">
+                <div class="layui-col-md2">
+                    <div id="listtable2"> </div>
+                    <script type="text/html" id="tpl_lsttable2">
+                        <table class='layui-table'>
+                            <thead class='head'>
+                                <tr>
+                                    <th> 数据库</th>
+                                    <th>  </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {{each lst as item }}
+                                <tr>
+                                    <td class="tl">
+                                        <a href="javascript:void(0)"  onclick="P.GetTableRow('{{item.name}}','')">
+                                            {{item.name}}
+                                        </a>
+                                    </td>
+                                    <td class="tl">
+                                        <a href="javascript:void(0)" onclick="P.DialogJoinGroup('{{item.name}}' );"  >
+                                           关系图
+                                        </a>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </script>
+                </div>
+                <div class="layui-col-md3">
+                    <div id="listtable3"> </div>
+                    <script type="text/html" id="tpl_lsttable3">
+                        <ul>
+
+                            <li><span>{{tablecount}}张表</span>，<span>{{totalrows}}行数据</span></li>
+                            {{each lst as item }}
+                            <li class="card">
+                                <span class="tl">
+                                    <a href="javascript:void(0)" onclick="P.GetTableInfo('{{item.database}}','{{item.name}}')">
+                                    {{$index}}.{{item.name}}({{item.rows}})
+                                    </a>
+                                </span>
+                               
+                                
+                            </li>
+                            {{/each}}
+                        </ul>
+
+                    </script>
+                </div>
+                <div class="layui-col-md5">
+                    <!--列表页-->
+                    <div id="listtable4"> </div>
+                    <script type="text/html" id="tpl_lsttable4">
+                        <table class='layui-table'>
+                            <thead class='head'>
+                                <tr>
+                                    <th> 表名</th>
+                                    <th> 列名</th>
+                                    <th> 描述</th>
+                                    <th> 类型</th>
+
+                                    <th> 列长度</th>
+                                    <th> 是否主键</th>
+                                    <th> 是否自增</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {{each lst as item }}
+                                <tr>
+
+                                    <td class="tl">{{item.TableName}}</td>
+                                    <td class="tl">{{item.Column}}</td>
+                                    <td>{{item.ColumnDesc}}</td>
+
+                                    <td>{{item.Type}}</td>
+                                    <td>{{item.Len}}</td>
+                                    <td>{{item.PrimaryKey}}</td>
+                                    <td>{{item.Identity}}</td>
+
+
+                                </tr>
+
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </script>
+                    <div class='pagezone' id='pagezone'></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //全局数据对象
+    var ban = new Ban({
+        data: {
+            Search: {
+                configno: LP.GetQueryString("configno"),
+                PageSize: 20,
+                Page: 1
+            }, //搜索条件
+            Lst: [], //列表集合,
+            searchcb: "P.HandData",
+            LstFileType: [{ key: "1", val: "文件" }, { key: "0", val: "目录" }],
+            LstStatus: [{ key: "1", val: "启用" }, { key: "0", val: "禁用" }],
+            SearchUrl: ' ',
+            EditSaveUrl: '/db/SaveConfig',
+            CancelUrl: '',
+        }
+    });
+    var P = {
+        HandData: (r) => {
+
+
+        },
+        GetDB: () => {
+            http.get("/db/GetDatabaseList?configno=" + LP.GetQueryString("configno")).then(r => {
+                var Lst = [];
+                r.attr.forEach(x => {
+                    Lst.push({ name: x })
+                });
+                LP.TmplReader({ lst: Lst }, "tpl_lsttable2", "listtable2")
+            });
+        },
+        GetTableRow: (database, tablename) => {
+            var url = "/db/GetTableRows?configno=" + LP.GetQueryString("configno");
+            url += "&database=" + database;
+            url += "&tablename=" + tablename;
+
+            http.get(url).then(r => {
+                var Lst = []; var totalrows = 0;
+                JSON.parse(r.attr).forEach(x => {
+                    totalrows += parseInt(x.rows);
+                    Lst.push({ name: x.name, rows: x.rows, database: database })
+                });
+                LP.TmplReader({ lst: Lst, tablecount: Lst.length, totalrows: totalrows }, "tpl_lsttable3", "listtable3")
+            });
+        },
+        GetTableInfo: (database, tablename) => {
+            var url = "/db/GetTableColumn?configno=" + LP.GetQueryString("configno");
+            url += "&database=" + database;
+            url += "&table=" + tablename;
+            http.get(url).then(r => {
+                var Lst = r.attr;
+                LP.TmplReader({ lst: Lst }, "tpl_lsttable4", "listtable4")
+            });
+        },
+        DialogJoinGroup: (database) => { 
+            var rul = "/DB/group?configno=" + LP.GetQueryString("configno");
+            rul += "&database=" + database;
+            window.open(rul, "_blank")
+        },
+        DialogEdit: (i) => {
+            var data = ban.$data.Edit;
+            if (i >= 0) {
+                data = ban.$data.Lst[i];
+                data.ReadOnly = "readonly=readonly";
+            }
+            else {
+                data = {};
+                data.Id = 0; data.Status = 1;
+            }
+            var html = template('tpl_edit', data);
+            LP.DialogHtml({
+                html: html, h: 450, w: 700,
+                title: " 新增或修改",
+                cb: function () {
+                    var data = $("#fmedit").serializeJson();
+                    data.FileType = 1;
+                    data.CompressName = "-";
+                    LP.CommonAjax(ban.$data.EditSaveUrl, data, "确认操作吗?", function (r) {
+                        if (r.code == 100) {
+                            BJPL.SearchData(0);
+                        } else {
+                            top.LP.ToastError(r.message);
+                        }
+                    });
+                }
+            });
+            LP.InitDefval();
+        },
+        Init: () => {
+            P.GetDB();
+
+        }
+    }
+
+    $(() => {
+        P.Init();
+    })
+</script>
+<script type="text/javascript" src="/js/bj-pagelist.js"></script>
+

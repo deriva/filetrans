@@ -1,0 +1,320 @@
+﻿<style type="text/css">
+    .tl { text-align: left !important; }
+    .on { background-color: #1E9FFF;color:#fff; }
+    .on a{  color: #fff; }
+    #listtable3 { border: 1px solid rgb(128 128 128 / 0.44); border-radius: 2px; display: flex; padding: 1px; }
+    #listtable3 .card { overflow-x: scroll; margin: 2px; padding: 2px; height: 30px; line-height: 30px; word-break: break-all; word-wrap: break-word; }
+    #listtable4 .card { overflow-x: scroll; float: left; margin: 2px; padding: 2px; word-break: break-all; word-wrap: break-word; }
+    .layui-table { margin-top: 0px !important }
+    #listtable3 { max-height: 900px; overflow: scroll; }
+    .ul3 li { float: left; margin: 5px; font-size: 16px; font-weight: bolder; padding: 2px 5px; border: 1px solid rgb(128 128 128 / 0.31); height: 30px; line-height: 30px; }
+    .tabcard h2 { background-color:rgb(255 0 0);color:#ffffff;text-align:center}
+
+    .tabcard { max-height: 500px; overflow: scroll; max-width: 500px; }
+    #listtable4 { column-count: 5; column-gap: 10px; }
+</style>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <div>
+            <form class="layui-form layui-form-pane" action="" id="fm">
+                <div class="layui-form-item">
+                    <div class='layui-inline'>
+                        <label class='layui-form-label'>组名称</label>
+                        <div class='layui-input-inline'>
+                            <input type='text' value='' bf-model='GroupInfo.GroupName' class='layui-input' />
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <button type="button" class="layui-btn layui-btn-primary"
+                                onclick="P.SaveGroupInfo(0)">
+                            <i class="layui-icon"></i> 保存
+                        </button>
+
+                        <button type="button" class="layui-btn layui-btn-primary"
+                                onclick="P.DialogDataRow(0)">
+                            <i class="layui-icon"></i> 添加关系表
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <hr />
+        </div>
+        <div class="dataroww" style="display:none;">
+            <div id="listtable3"> </div>
+            <script type="text/html" id="tpl_lsttable3">
+                <ul class="ul3">
+                    <li>(<span>{{totalrows}}行数据</span>)<span>表:{{tablecount}}</span> </li>
+
+                    {{each lst as item }}
+                    <li class="card" style="">
+
+                        <span>
+                            <a href="javascript:void(0)" ondblclick="P.JoinGroup('{{item.name}}')">
+                                {{$index}}.{{item.name}}  (<span>{{item.rows}}</span>)
+                            </a>
+                        </span>
+
+                    </li>
+                    {{/each}}
+                </ul>
+            </script>
+        </div>
+
+        <div class="layui-btn-container">
+
+        </div>
+        <div class="row">
+            <div class="layui-row">
+                <div class="layui-col-md1">
+                    <div id="listtable2"> </div>
+                    <script type="text/html" id="tpl_lsttable2">
+                        <table class='layui-table'>
+                            <thead class='head'>
+                                <tr>
+                                    <th> 关系图</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {{each lst as item }}
+                                <tr class="{{item.chkon}}">
+                                    <td class="tl">
+                                        <a href="javascript:void(0)" onclick="P.CheckGroupInfo('{{item.ID}}')">
+                                            {{item.GroupName}}
+                                        </a>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </script>
+                </div>
+
+                <div class="layui-col-md11">
+                    <!--列表页-->
+                    <div id="listtable4"> </div>
+                    <script type="text/html" id="tpl_lsttable4">
+                        <ul>
+                            {{each lst as sub }}
+                            <li class="card tabcard">
+                                <h2 ondblclick="P.RemoveGroup('{{sub.tablename}}')">表{{sub.tablename}}</h2>
+                                <table class='layui-table '>
+                                    <thead class='head'>
+                                        <tr>
+
+                                            <th> 列名</th>
+                                            <th> 描述</th>
+                                            <th> 类型</th>
+
+                                            <th> 列长度</th>
+                                            <th> 是否主键</th>
+                                            <th> 是否自增</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        {{each sub.lst as item }}
+                                        <tr>
+
+
+                                            <td class="tl">{{item.Column}}</td>
+                                            <td>{{item.ColumnDesc}}</td>
+
+                                            <td>{{item.Type}}</td>
+                                            <td>{{item.Len}}</td>
+                                            <td>{{item.PrimaryKey}}</td>
+                                            <td>{{item.Identity}}</td>
+
+
+                                        </tr>
+
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </li>
+                            {{/each}}
+                        </ul>
+
+
+
+                    </script>
+                    <div class='pagezone' id='pagezone'></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //全局数据对象
+    var ban = new Ban({
+        data: {
+            Search: {
+                configno: LP.GetQueryString("configno"),
+                DBName: LP.GetQueryString("database"),
+                PageSize: 20,
+                Page: 1
+            }, //搜索条件
+            GroupInfo: {
+                GroupName: "", GroupNo: "", ID: "0", UserNo: "", ConfigNo: LP.GetQueryString("configno"), DBName: LP.GetQueryString("database")
+            },
+            LstGroupInfo: [],
+            Lst: [], //列表集合,
+            searchcb: "P.HandData",
+            LstFileType: [{ key: "1", val: "文件" }, { key: "0", val: "目录" }],
+            LstStatus: [{ key: "1", val: "启用" }, { key: "0", val: "禁用" }],
+            SearchUrl: ' ',
+            EditSaveUrl: '/db/SaveConfig',
+            CancelUrl: '',
+        }
+    });
+    var P = {
+        HandData: (r) => {
+
+
+        },
+        //保存组信息
+        SaveGroupInfo: () => {
+            var url = "/db/SaveGroupInfo";
+            if (ban.$data.GroupInfo.GroupName.length == 0) {
+                layer.msg("请先输入组名"); return false;
+            }
+            http.post(url, ban.$data.GroupInfo).then(r => {
+                P.GetGroupInfo();
+            });
+        },
+        CheckGroupInfo: (id) => {
+            var info = {};
+            ban.$data.LstGroupInfo.forEach(x => {
+                x.chkon = "";
+                if (x.ID == id) {
+                    x.chkon = "on";
+                    info = x;
+                }
+            });
+            P.ReaderTableInfo();
+            P.GetGroupTables(info.GroupNo);
+        },
+        ReaderTableInfo: () => {
+            LP.TmplReader({ lst: ban.$data.LstGroupInfo }, "tpl_lsttable2", "listtable2")
+        },
+        GetGroupInfo: () => {
+            var url = "/db/GroupInfoList?page=1&pagesize=10000&configno=" + LP.GetQueryString("configno");
+            url += "&DBName=" + LP.GetQueryString("database");
+            http.get(url).then(r => {
+                ban.$data.LstGroupInfo = [];
+                r.attr.DataSource.forEach(x => {
+                    debugger;
+                    x.chkon = "";
+                    ban.$data.LstGroupInfo.push(x);
+                });
+                P.ReaderTableInfo()
+            });
+        },
+        GetTableRow: (database, tablename) => {
+            var url = "/db/GetTableRows?configno=" + LP.GetQueryString("configno");
+            url += "&database=" + database;
+            url += "&tablename=" + tablename;
+
+            http.get(url).then(r => {
+                var Lst = []; var totalrows = 0;
+                JSON.parse(r.attr).forEach(x => {
+                    totalrows += parseInt(x.rows);
+                    Lst.push({ name: x.name, rows: x.rows, database: database })
+                });
+                LP.TmplReader({ lst: Lst, tablecount: Lst.length, totalrows: totalrows }, "tpl_lsttable3", "listtable3")
+            });
+        },
+        JoinGroup: (name) => {
+            var url = "/db/SaveGroupTable";
+
+            var info = ban.$data.LstGroupInfo.find(x => x.chkon == "on");
+            if (info) {
+                info.ID = 0;
+                info.TableName = name;
+                http.post(url, info).then(r => {
+                    P.GetGroupTables(info.GroupNo);
+                });
+            } else {
+                layer.msg("请先选择组"); return false; 
+            }
+        },
+        RemoveGroup: (name) => {
+            var url = "/db/RemoveGroupTable";
+
+            var info = ban.$data.LstGroupInfo.find(x => x.chkon == "on");
+            if (info) { 
+                info.TableName = name;
+                http.post(url, info).then(r => {
+                    P.GetGroupTables(info.GroupNo);
+                });
+            } else {
+                layer.msg("请先选择组"); return false;
+            }
+        },
+        GetGroupTables: (groupno) => {
+            var url = "/db/GroupTableList?configno=" + LP.GetQueryString("configno");
+            url += "&DBName=" + ban.$data.Search.DBName;
+            url += "&GroupNo=" + groupno;
+
+            http.get(url).then(r => {
+                var Lst = [];
+                r.attr.DataSource.forEach(x => {
+                    x.chkon = "";
+                    Lst.push(x.TableName);
+                });
+                P.GetTableColumn(ban.$data.Search.DBName, Lst);
+            });
+        },
+        GetTableColumn: (database, tablenames) => {
+            if (tablenames.length == 0) {
+                LP.TmplReader({ lst: [] }, "tpl_lsttable4", "listtable4");
+                return; 
+            }
+            var url = "/db/GetTableColumn?configno=" + LP.GetQueryString("configno");
+            url += "&database=" + database;
+            url += "&table=" + tablenames.toString();
+            http.get(url).then(r => {
+                var Lst = r.attr;
+                var arr = [];
+                tablenames.forEach(x => {
+                    var y = {};
+                    y.tablename = x;
+                    y.lst = [];
+                    Lst.forEach(z => {
+                        if (z.TableName == x) {
+                            y.lst.push(z);
+                        }
+                    });
+                    arr.push(y);
+                });
+
+                LP.TmplReader({ lst: arr }, "tpl_lsttable4", "listtable4");
+              
+            });
+        },
+        DialogDataRow: () => {
+            var info = ban.$data.LstGroupInfo.find(x => x.chkon == "on");
+            if (info) {
+                var title = "关系组:" + info.GroupName;
+                LP.DialogRb($("#listtable3").html(), 0, window.innerHeight * 0.7, title, 3, "auto");
+
+            } else {
+                layer.msg("请先选择组"); return false;
+
+            }
+        },
+        Init: () => {
+            P.GetGroupInfo();
+            P.GetTableRow(ban.$data.Search.DBName, "");
+        }
+    }
+
+    $(() => {
+        P.Init();
+    })
+</script>
+<script type="text/javascript" src="/js/bj-pagelist.js"></script>
+
