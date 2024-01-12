@@ -271,15 +271,20 @@ namespace Bc.PublishWF.Biz.V3
                 client.Close();
                 if (info.IsIIS.ToInt(1) == 1)//如果是IIS站点
                 {
-                    StartOrStopWebsite(sitename, false);//关闭站点
-                    Thread.Sleep(2000);
+                    //StartOrStopWebsite(sitename, false);//关闭站点
+                    //StartOrStopWebsite(sitename, false);//关闭站点
+                    var cmdResult = BatHelper.StopSite(sitename);
+                    ControlHelper.AddMsg(cmdResult);
+                    Thread.Sleep(3000);
 
                     ControlHelper.AddMsg($"开始移动文件到站点[{sitename}]......");
                     //移动文件
                     FileCommonHelper.FileMove(roodir, target, null, null, "", true);
 
                     Thread.Sleep(2000);
-                    StartOrStopWebsite(sitename, true);//开启站点站点 
+                    cmdResult = BatHelper.StartSite(sitename);
+                    ControlHelper.AddMsg(cmdResult);
+                    //StartOrStopWebsite(sitename, true);//开启站点站点 
                 }
                 else if (info.IsIIS.ToInt(1) == 2)//如果是IIS站点
                 {

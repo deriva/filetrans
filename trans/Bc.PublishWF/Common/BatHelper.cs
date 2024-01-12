@@ -39,5 +39,36 @@ namespace Bc.PublishWF.Common
             process.Close(); // 关闭进程 
             return result;
         }
+
+
+        /// <summary>
+        /// 启动站点
+        /// </summary>
+        /// <param name="siteName"></param>
+        /// <returns></returns>
+        public static string StartSite(string siteName)
+        {
+            var r = "";
+            var cmd = @"C:\Windows\System32\inetsrv\appcmd.exe start apppool /apppool.name:" + siteName;
+            r += "程序池:" + Exec(cmd);
+            cmd = @"c:\Windows\System32\inetsrv\appcmd.exe start site " + siteName;
+            r += "站点:" + Exec(cmd);
+            return r;
+        }
+
+        /// <summary>
+        /// 停止站点
+        /// </summary>
+        /// <param name="siteName"></param>
+        /// <returns></returns>
+        public static string StopSite(string siteName)
+        {
+            var r = "";
+            var cmd = @"C:\Windows\System32\inetsrv\appcmd.exe stop  apppool /apppool.name:" + siteName;
+            r += "程序池:" + Exec(cmd);
+            cmd = @"c:\Windows\System32\inetsrv\appcmd.exe stop  site " + siteName;
+            r += "站点:" + Exec(cmd);
+            return r;
+        }
     }
 }

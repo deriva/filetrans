@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -60,29 +61,31 @@ namespace Bc.PublishWF.Common
 
             try
             {
+               
                 Task.Factory.StartNew(() =>
                 {
+                    ObjectState objectState;
                     var r = 0;
                     using (var sm = new ServerManager(@"C:\Windows\System32\inetsrv\config\applicationHost.config"))
                     {
                         //创建应用程序池
                         var appPool = sm.ApplicationPools.FirstOrDefault(ap => ap.Name.Equals(poolname));
-
                         if (appPool != null)
                         {
                             if (type == 1)
                             {
-                                appPool.Start();
-                                ControlHelper.AddMsg("启动应用程序池:" + poolname);
+                                objectState= appPool.Start();
+                                ControlHelper.AddMsg(poolname+" 启动应用程序池:" + objectState.ToStr()   );
                             }
                             else if (type == 2)
                             {
-                                ControlHelper.AddMsg("停止应用程序池:" + poolname);
-                                appPool.Stop();
+         
+                                objectState = appPool.Stop();
+                                ControlHelper.AddMsg(poolname + " 停止应用程序池:" + objectState.ToStr() );
                             }
                             else if (type == 3)
                             {
-                                ControlHelper.AddMsg("移除应用程序池:" + poolname);
+                                ControlHelper.AddMsg(poolname + " 移除应用程序池:" );
                                 sm.ApplicationPools.Remove(appPool);
                             }
                             r += 1;
@@ -94,17 +97,19 @@ namespace Bc.PublishWF.Common
                         {
                             if (type == 1)
                             {
-                                ControlHelper.AddMsg("启动站点:" + sitename);
-                                site.Start();
+                                objectState = site.Start();
+                                ControlHelper.AddMsg(sitename+"启动站点:" + objectState.ToStr() );
+                          
                             }
                             else if (type == 2)
                             {
-                                ControlHelper.AddMsg("停止站点:" + sitename);
-                                site.Stop();
+                               objectState = site.Stop();
+                                ControlHelper.AddMsg(sitename + "停止站点:" +objectState.ToStr() );
+
                             }
                             else if (type == 3)
                             {
-                                ControlHelper.AddMsg("移除站点:" + sitename);
+                                ControlHelper.AddMsg(sitename + "移除站点:" );
                                 sm.Sites.Remove(site);
                             }
                             r += 1;
